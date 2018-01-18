@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "415944088263",
+    "firebase_url": "https://strenggeheim-c7779.firebaseio.com",
+    "project_id": "strenggeheim-c7779",
+    "storage_bucket": "strenggeheim-c7779.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415944088263:android:1d7a47355cfd17b1",
+        "android_client_info": {
+          "package_name": "com.stegano.strenggeheim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415944088263-nl42nmgdh85d8k73u1bgboguq8r8n05o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABoXM3-g_PMktkhd5iSgCwPxevpPo1Nxs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
