@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.widget.TextView;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -24,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private int[] tabIcons = {
+            R.drawable.ic_tab_encode,
+            R.drawable.ic_tab_decode
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTab() {
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabOne.setText("Encode");
-//        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_encode, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
-        tabOne.setSelected(true);
-
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("Decode");
-//        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_tab_encode, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

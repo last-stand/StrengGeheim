@@ -15,4 +15,5 @@
         <item name="tabIndicatorColor">?attr/colorAccent</item>
         <item name="tabIndicatorHeight">6sp</item>
     </style>
+
 </resources>
