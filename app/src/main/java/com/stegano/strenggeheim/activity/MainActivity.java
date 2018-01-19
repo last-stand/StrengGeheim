@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private View navHeader;
     private ImageView imgProfile;
-    private TextView txtName, txtWebsite;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -172,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 // home
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
+                //viewPager.setCurrentItem(0, false);
             case 1:
                 // notifications fragment
                 NotificationsFragment notificationsFragment = new NotificationsFragment();
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:
-                return new HomeFragment();
+                return new FragmentEncode();
         }
     }
 
