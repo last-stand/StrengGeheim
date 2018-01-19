@@ -1,4 +1,4 @@
-package com.stegano.strenggeheim.utils;
+package com.stegano.strenggeheim.utils.stego;
 
 import java.io.File;
 import java.io.IOException;

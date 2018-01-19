@@ -1,4 +1,4 @@
-package com.stegano.strenggeheim.utils;
+package com.stegano.strenggeheim.utils.stego;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
