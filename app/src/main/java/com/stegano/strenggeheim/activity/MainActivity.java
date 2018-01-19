@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -26,24 +24,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.stegano.strenggeheim.R;
+import com.stegano.strenggeheim.fragment.FragmentDecode;
+import com.stegano.strenggeheim.fragment.FragmentEncode;
+import com.stegano.strenggeheim.fragment.HomeFragment;
+import com.stegano.strenggeheim.fragment.NotificationsFragment;
+import com.stegano.strenggeheim.fragment.SettingsFragment;
 import com.stegano.strenggeheim.utils.stego.BitmapHelper;
 import com.stegano.strenggeheim.utils.stego.Steganographer;
-import com.stegano.strenggeheim.fragment.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
-    private ImageView imgNavHeaderBg, imgProfile;
+    private ImageView imgProfile;
     private TextView txtName, txtWebsite;
-    private FloatingActionButton fab;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -91,25 +92,13 @@ public class MainActivity extends AppCompatActivity {
         mHandler = new Handler();
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         // Navigation view header
         navHeader = navigationView.getHeaderView(0);
-        txtName = (TextView) navHeader.findViewById(R.id.name);
-        txtWebsite = (TextView) navHeader.findViewById(R.id.website);
-        imgNavHeaderBg = (ImageView) navHeader.findViewById(R.id.img_header_bg);
         imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         // load nav menu header data
         loadNavHeader();
@@ -126,9 +115,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadNavHeader() {
-        txtName.setText("Streng Geheim");
-        txtWebsite.setText("https://github.com/last-stand");
-
         Glide.with(this).load(R.raw.stego)
                 .thumbnail(0.5f)
                 .apply(RequestOptions.circleCropTransform())
@@ -148,9 +134,6 @@ public class MainActivity extends AppCompatActivity {
         // just close the navigation drawer
         if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
-
-            // show or hide the fab button
-            toggleFab();
             return;
         }
 
@@ -175,9 +158,6 @@ public class MainActivity extends AppCompatActivity {
         if (mPendingRunnable != null) {
             mHandler.post(mPendingRunnable);
         }
-
-        // show or hide the fab button
-        toggleFab();
 
         //Closing drawer on item click
         drawer.closeDrawers();
@@ -347,15 +327,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    // show or hide the fab
-    private void toggleFab() {
-        if (navItemIndex == 0)
-            fab.show();
-        else
-            fab.hide();
-    }
-
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
