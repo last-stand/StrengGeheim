@@ -10,7 +10,6 @@
     <dimen name="nav_header_vertical_spacing">16sp</dimen>
     <dimen name="nav_header_height">160sp</dimen>
 
-    <dimen name="fab_margin">16sp</dimen>
     <dimen name="profile_width">75sp</dimen>
     <dimen name="profile_height">75sp</dimen>
 </resources>
