@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
                         CURRENT_TAG = TAG_SETTINGS;
                         break;
                     case R.id.nav_about_us:
-                        startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+                        Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
+                        startActivity(intent);
                         drawer.closeDrawers();
                         return true;
                     default:
