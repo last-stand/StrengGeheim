@@ -11,5 +11,6 @@
     <color name="textColorSecondary">#FFFFFF</color>
     <color name="windowBackgroundSecondary">#FFFFFF</color>
     <color name="navigationBarColorSecondary">#000000</color>
-    <color name="colorAccentSecondary">#c8e8ff</color>
+    <color name="colorButtonBackground">#212121</color>
+    <color name="colorButtonText">#f5f5f5</color>
 </resources>

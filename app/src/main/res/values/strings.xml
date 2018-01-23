@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Streng Geheim</string>
     <string name="action_settings">Settings</string>
-    <string name="encode">Encode Text</string>
+    <string name="encode">Encode</string>
     <string name="decode">Decode Text</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -20,4 +20,11 @@
 
     <string name="header_about_us">About us</string>
     <string name="title_activity_about_us">title_activity_about_us</string>
+
+    <string name="description_upload_image">Tap here to upload image.</string>
+    <string name="load_picture">Load Picture</string>
+    <string name="desc_encode_image">Image to encode</string>
+
+    <string name="password_edit_text_hint">Mandatory password, minimum 8 characters</string>
+    <string name="enter_text">Enter Text</string>
 </resources>
