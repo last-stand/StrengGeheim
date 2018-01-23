@@ -13,4 +13,6 @@
 
     <dimen name="profile_width">116sp</dimen>
     <dimen name="profile_height">116sp</dimen>
+
+    <dimen name="load_image_layout_margin_top">1sp</dimen>
 </resources>
