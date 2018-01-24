@@ -1,8 +1,11 @@
 package com.stegano.strenggeheim.fragment;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,9 +31,10 @@ import java.util.UUID;
 
 
 public class FragmentEncode extends Fragment {
+    private static final String MESSAGE_IMAGE_SAVED = "Image Saved!";;
+    private static final String MESSAGE_FAILED = "Failed!";
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
     private static final int GALLERY = 0, CAMERA = 1;
-    private static Uri contentURI;
     TextView imageTextMessage;
     ImageView loadImage;
 
@@ -105,30 +109,57 @@ public class FragmentEncode extends Fragment {
         if (resultCode == getActivity().RESULT_CANCELED) {
             return;
         }
-        if (requestCode == GALLERY) {
-            if (data != null) {
-                contentURI = data.getData();
+        if (requestCode == GALLERY && data != null) {
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), contentURI);
+                    Bitmap bitmap = getBitmapFromData(data, getContext());
                     String path = saveImage(bitmap);
                     Log.println(Log.INFO, "Message", path);
-                    Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
                     loadImage.setImageBitmap(bitmap);
                     imageTextMessage.setVisibility(View.INVISIBLE);
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), MESSAGE_FAILED, Toast.LENGTH_SHORT).show();
                 }
-            }
 
         } else if (requestCode == CAMERA) {
             Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
             loadImage.setImageBitmap(thumbnail);
             saveImage(thumbnail);
-            Toast.makeText(getContext(), "Image Saved!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
             imageTextMessage.setVisibility(View.INVISIBLE);
         }
+    }
+
+    private Bitmap getBitmapFromData(Intent intent, Context context){
+        Uri selectedImage = intent.getData();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+        return setFullImageFromFilePath(picturePath, loadImage);
+    }
+
+    private Bitmap setFullImageFromFilePath(String imagePath, ImageView imageView) {
+        int targetWidth = imageView.getWidth();
+        int targetHeight = imageView.getHeight();
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagePath, bmOptions);
+        int photoWidth = bmOptions.outWidth;
+        int photoHeight = bmOptions.outHeight;
+
+        int scaleFactor = Math.min(photoWidth/targetWidth, photoHeight/targetHeight);
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
+        return bitmap;
     }
 
 
