@@ -26,4 +26,6 @@
 
     <string name="password_edit_text_hint">Mandatory password, minimum 8 characters</string>
     <string name="enter_text">Enter Text</string>
+
+    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
 </resources>

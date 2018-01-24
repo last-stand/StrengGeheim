@@ -1,5 +1,6 @@
 package com.stegano.strenggeheim.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,8 +34,9 @@ import com.stegano.strenggeheim.utils.stego.Steganographer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends RuntimePermissionsActivity {
 
+    private static final int REQUEST_PERMISSIONS = 20;
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private View navHeader;
@@ -97,7 +98,17 @@ public class MainActivity extends AppCompatActivity {
             CURRENT_TAG = TAG_HOME;
             loadHomeFragment();
         }
+        getAllPermissions();
+    }
 
+    private void getAllPermissions(){
+        String[] permissionsNeeded = new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA};
+        MainActivity.super.requestAppPermissions(permissionsNeeded,
+                        R.string.runtime_permissions_txt,
+                        REQUEST_PERMISSIONS);
     }
 
     private void loadNavHeader() {
@@ -234,6 +245,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         super.onBackPressed();
+    }
+
+
+    @Override
+    public void onPermissionsGranted(final int requestCode) {
+        Log.println(Log.INFO, "Permissions:", "All permissions granted.");
     }
 
     private void setupViewPager(ViewPager viewPager) {
