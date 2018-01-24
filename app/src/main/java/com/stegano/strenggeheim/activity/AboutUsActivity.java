@@ -9,20 +9,20 @@ import com.stegano.strenggeheim.R;
 public class AboutUsActivity extends AppCompatActivity {
     private final static String aboutUsHtmlContent =
             "<body>" +
-            "  <p style=\"{text-align: justify;}\">" +
+            "  <p style=\"text-align: justify;\">" +
             "   <b >About Project:</b><br>" +
             "\"Streng Geheim\" is a German phrase which means \"Top Secret\". This is an " +
             "open-source project which provides Steganography functionality which means concealing "+
             "a secret message, image, or file within another message, image, or file. This app "+
             "uses images for that." +
             "  </p>" +
-            "<p style=\"{text-align: justify;}\">" +
+            "<p style=\"text-align: justify;\">" +
             "This app provides AES, RC5, RC6 and TripleDES data encryption and SHA-1, SHA-256 and "+
             "MD-5 hashing algorithm for password protection. It uses XZ(LZMA2) data compression. "+
             "You can choose any encryption and hashing algorithm to protect your data. This app "+
             "needs  24 bit Bitmap(.bmp) image, don't worry app is already doing it for you." +
             "</p>" +
-            "   <p style=\"{text-align: justify;}\">" +
+            "   <p style=\"text-align: justify;\">" +
             "   <b>About Us:</b><br>" +
             "    Nothing much, just like to do cool stuff. I will appreciate if people contribute "+
             "more to this project and help to make it better. By the way I don't like Batman." +
