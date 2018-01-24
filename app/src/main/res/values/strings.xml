@@ -18,8 +18,7 @@
         <item>Settings</item>
     </string-array>
 
-    <string name="header_about_us">About us</string>
-    <string name="title_activity_about_us">title_activity_about_us</string>
+    <string name="title_activity_about_us">About us</string>
 
     <string name="description_upload_image">Tap here to upload image.</string>
     <string name="load_picture">Load Picture</string>
