@@ -13,7 +13,7 @@
         <ImageView
             android:id="@+id/loadImage"
             android:layout_width="match_parent"
-            android:layout_height="300sp"
+            android:layout_height="@dimen/load_image_encode"
             android:gravity="center"
             android:paddingTop="2sp"
             android:contentDescription="@string/description_upload_image"
@@ -33,13 +33,13 @@
     </FrameLayout>
 
     <EditText android:textColor="@color/colorPrimaryDark"
-        android:gravity="center"
+        android:gravity="left"
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginTop="15sp"
+        android:layout_marginLeft="12sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginTop="16sp"
         android:hint="@string/password_edit_text_hint"
         android:maxLength="16"
         android:inputType="textPassword" />
@@ -52,24 +52,24 @@
         <Button
             android:id="@+id/textToEncodeButton"
             android:layout_width="match_parent"
-            android:layout_height="60sp"
+            android:layout_height="56sp"
             android:layout_margin="12sp"
             android:background="@color/colorButtonBackground"
             android:text="@string/enter_text"
             android:textColor="@color/colorButtonText"
-            android:textSize="22sp" />
+            android:textSize="@dimen/button_text_size" />
 
         <Button
             android:id="@+id/encodeButton"
             android:layout_width="match_parent"
-            android:layout_height="60sp"
+            android:layout_height="56sp"
             android:layout_marginLeft="12sp"
             android:layout_marginRight="12sp"
             android:background="@color/colorButtonBackground"
             android:onClick="decodeButtonClicked"
             android:text="@string/encode"
             android:textColor="@color/colorButtonText"
-            android:textSize="22sp" />
+            android:textSize="@dimen/button_text_size" />
 
     </LinearLayout>
 

@@ -28,4 +28,5 @@
     <string name="enter_text">Enter Text</string>
 
     <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
+    <string name="app_logo_content_description">Image for app logo.</string>
 </resources>
