@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stegano.strenggeheim.BuildConfig;
 import com.stegano.strenggeheim.R;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +37,7 @@ public class FragmentEncode extends Fragment {
     private static final String MESSAGE_FAILED = "Failed!";
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
     private static final int GALLERY = 0, CAMERA = 1;
+    private Uri fileUri;
     TextView imageTextMessage;
     ImageView loadImage;
 
@@ -49,13 +52,25 @@ public class FragmentEncode extends Fragment {
 
     public void galleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY);
     }
 
     private void cameraIntent() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        fileUri = getOutputMediaFileUri();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, CAMERA);
+    }
+
+    private Uri getOutputMediaFileUri() {
+        try {
+            return FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",getOutputMediaFile());
+        }
+        catch (IOException ex){
+
+        }
+        return null;
     }
 
     @Override
@@ -124,9 +139,7 @@ public class FragmentEncode extends Fragment {
                 }
 
         } else if (requestCode == CAMERA) {
-            Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-            loadImage.setImageBitmap(thumbnail);
-            saveImage(thumbnail);
+            loadImage.setImageURI(fileUri);
             Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
             imageTextMessage.setVisibility(View.INVISIBLE);
         }
@@ -140,53 +153,38 @@ public class FragmentEncode extends Fragment {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
-        return setFullImageFromFilePath(picturePath, loadImage);
+        return BitmapFactory.decodeFile(picturePath);
     }
-
-    private Bitmap setFullImageFromFilePath(String imagePath, ImageView imageView) {
-        int targetWidth = imageView.getWidth();
-        int targetHeight = imageView.getHeight();
-
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, bmOptions);
-        int photoWidth = bmOptions.outWidth;
-        int photoHeight = bmOptions.outHeight;
-
-        int scaleFactor = Math.min(photoWidth/targetWidth, photoHeight/targetHeight);
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(imagePath, bmOptions);
-        return bitmap;
-    }
-
 
     public String saveImage(Bitmap bmpImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmpImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        try {
+            File mediaFile = getOutputMediaFile();
+            FileOutputStream fo = new FileOutputStream(mediaFile);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(getContext(),
+                    new String[]{mediaFile.getPath()},
+                    new String[]{"image/png"}, null);
+            fo.close();
+
+            return mediaFile.getAbsolutePath();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "";
+    }
+
+    private File getOutputMediaFile() throws IOException {
         File encodeImageDirectory =
                 new File(Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
 
         if (!encodeImageDirectory.exists()) {
             encodeImageDirectory.mkdirs();
         }
-        try {
-            String uniqueId = UUID.randomUUID().toString();
-            File f = new File(encodeImageDirectory, uniqueId + ".png");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(getContext(),
-                    new String[]{f.getPath()},
-                    new String[]{"image/png"}, null);
-            fo.close();
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
+        String uniqueId = UUID.randomUUID().toString();
+        File mediaFile = new File(encodeImageDirectory, uniqueId + ".png");
+        mediaFile.createNewFile();
+        return mediaFile;
     }
 }
