@@ -37,7 +37,7 @@ public class FragmentEncode extends Fragment {
     private static final String MESSAGE_FAILED = "Failed!";
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
     private static final int GALLERY = 0, CAMERA = 1;
-    private Uri fileUri;
+    private File capturedImage;
     TextView imageTextMessage;
     ImageView loadImage;
 
@@ -50,7 +50,7 @@ public class FragmentEncode extends Fragment {
         setRetainInstance(true);
     }
 
-    public void galleryIntent() {
+    private void galleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, GALLERY);
@@ -58,17 +58,19 @@ public class FragmentEncode extends Fragment {
 
     private void cameraIntent() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fileUri = getOutputMediaFileUri();
+        Uri fileUri = getOutputMediaFileUri();
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         startActivityForResult(intent, CAMERA);
     }
 
     private Uri getOutputMediaFileUri() {
         try {
-            return FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider",getOutputMediaFile());
+            capturedImage = getOutputMediaFile();
+            return FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", capturedImage);
         }
         catch (IOException ex){
-
+            ex.printStackTrace();
+            Toast.makeText(getContext(), MESSAGE_FAILED, Toast.LENGTH_SHORT).show();
         }
         return null;
     }
@@ -124,24 +126,26 @@ public class FragmentEncode extends Fragment {
         if (resultCode == getActivity().RESULT_CANCELED) {
             return;
         }
-        if (requestCode == GALLERY && data != null) {
-                try {
+        try {
+            if (requestCode == GALLERY && data != null) {
                     Bitmap bitmap = getBitmapFromData(data, getContext());
-                    String path = saveImage(bitmap);
+                    File mediaFile = getOutputMediaFile();
+                    String path = saveImage(bitmap, mediaFile);
                     Log.println(Log.INFO, "Message", path);
                     Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
                     loadImage.setImageBitmap(bitmap);
                     imageTextMessage.setVisibility(View.INVISIBLE);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(getContext(), MESSAGE_FAILED, Toast.LENGTH_SHORT).show();
-                }
-
-        } else if (requestCode == CAMERA) {
-            loadImage.setImageURI(fileUri);
-            Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
-            imageTextMessage.setVisibility(View.INVISIBLE);
+            } else if (requestCode == CAMERA) {
+                    final Bitmap bitmap = BitmapFactory.decodeFile(capturedImage.getAbsolutePath());
+                    loadImage.setImageBitmap(bitmap);
+                     saveImage(bitmap, capturedImage);
+                    Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
+                    imageTextMessage.setVisibility(View.INVISIBLE);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Toast.makeText(getContext(), MESSAGE_FAILED, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -156,11 +160,10 @@ public class FragmentEncode extends Fragment {
         return BitmapFactory.decodeFile(picturePath);
     }
 
-    public String saveImage(Bitmap bmpImage) {
+    private String saveImage(Bitmap bmpImage, File mediaFile) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmpImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
         try {
-            File mediaFile = getOutputMediaFile();
             FileOutputStream fo = new FileOutputStream(mediaFile);
             fo.write(bytes.toByteArray());
             MediaScannerConnection.scanFile(getContext(),
