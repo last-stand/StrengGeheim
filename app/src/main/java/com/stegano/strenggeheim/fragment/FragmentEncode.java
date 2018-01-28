@@ -17,12 +17,14 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stegano.strenggeheim.BuildConfig;
 import com.stegano.strenggeheim.R;
+import com.stegano.strenggeheim.activity.TextDialogActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -39,6 +41,7 @@ public class FragmentEncode extends Fragment {
     private File imageFile;
     TextView imageTextMessage;
     ImageView loadImage;
+    Button textToEncodeButton;
 
     public FragmentEncode() {
     }
@@ -81,11 +84,20 @@ public class FragmentEncode extends Fragment {
 
         imageTextMessage = view.findViewById(R.id.imageTextMessage);
         loadImage =  view.findViewById(R.id.loadImage);
+        textToEncodeButton = view.findViewById(R.id.textToEncodeButton);
 
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPictureDialog();
+            }
+        });
+
+        textToEncodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(), TextDialogActivity.class);
+                startActivity(intent);
             }
         });
         return view;
