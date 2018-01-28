@@ -33,13 +33,13 @@
     </FrameLayout>
 
     <EditText android:textColor="@color/colorPrimaryDark"
-        android:gravity="left"
+        android:gravity="start"
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12sp"
         android:layout_marginRight="12sp"
-        android:layout_marginTop="16sp"
+        android:layout_marginTop="12sp"
         android:hint="@string/password_edit_text_hint"
         android:maxLength="16"
         android:inputType="textPassword" />
@@ -52,8 +52,11 @@
         <Button
             android:id="@+id/textToEncodeButton"
             android:layout_width="match_parent"
-            android:layout_height="56sp"
-            android:layout_margin="12sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="12sp"
+            android:layout_marginRight="12sp"
             android:background="@color/colorButtonBackground"
             android:text="@string/enter_text"
             android:textColor="@color/colorButtonText"
@@ -62,7 +65,7 @@
         <Button
             android:id="@+id/encodeButton"
             android:layout_width="match_parent"
-            android:layout_height="56sp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12sp"
             android:layout_marginRight="12sp"
             android:background="@color/colorButtonBackground"
