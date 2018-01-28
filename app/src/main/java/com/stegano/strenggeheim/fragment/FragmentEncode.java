@@ -14,7 +14,6 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,7 @@ public class FragmentEncode extends Fragment {
     private static final String MESSAGE_FAILED = "Failed!";
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
     private static final int GALLERY = 0, CAMERA = 1;
-    private File capturedImage;
+    private File imageFile;
     TextView imageTextMessage;
     ImageView loadImage;
 
@@ -65,8 +64,8 @@ public class FragmentEncode extends Fragment {
 
     private Uri getOutputMediaFileUri() {
         try {
-            capturedImage = getOutputMediaFile();
-            return FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", capturedImage);
+            imageFile = getOutputMediaFile();
+            return FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
         }
         catch (IOException ex){
             ex.printStackTrace();
@@ -128,20 +127,19 @@ public class FragmentEncode extends Fragment {
         }
         try {
             if (requestCode == GALLERY && data != null) {
-                    Bitmap bitmap = getBitmapFromData(data, getContext());
-                    File mediaFile = getOutputMediaFile();
-                    String path = saveImage(bitmap, mediaFile);
-                    Log.println(Log.INFO, "Message", path);
-                    Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
-                    loadImage.setImageBitmap(bitmap);
-                    imageTextMessage.setVisibility(View.INVISIBLE);
+                Bitmap bitmap = getBitmapFromData(data, getContext());
+                imageFile = getOutputMediaFile();
+                loadImage.setImageBitmap(bitmap);
+                saveImage(bitmap, imageFile);
+                Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
+                imageTextMessage.setVisibility(View.INVISIBLE);
 
             } else if (requestCode == CAMERA) {
-                    final Bitmap bitmap = BitmapFactory.decodeFile(capturedImage.getAbsolutePath());
-                    loadImage.setImageBitmap(bitmap);
-                     saveImage(bitmap, capturedImage);
-                    Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
-                    imageTextMessage.setVisibility(View.INVISIBLE);
+                saveImage(imageFile);
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                loadImage.setImageBitmap(bitmap);
+                Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
+                imageTextMessage.setVisibility(View.INVISIBLE);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -152,7 +150,8 @@ public class FragmentEncode extends Fragment {
     private Bitmap getBitmapFromData(Intent intent, Context context){
         Uri selectedImage = intent.getData();
         String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        Cursor cursor = context.getContentResolver()
+                .query(selectedImage,filePathColumn, null, null, null);
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
@@ -161,14 +160,15 @@ public class FragmentEncode extends Fragment {
     }
 
     private String saveImage(Bitmap bmpImage, File mediaFile) {
+        Bitmap newBmpImage = bmpImage.copy(Bitmap.Config.ARGB_8888, true);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bmpImage.compress(Bitmap.CompressFormat.PNG, 100, bytes);
+        newBmpImage.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         try {
             FileOutputStream fo = new FileOutputStream(mediaFile);
             fo.write(bytes.toByteArray());
             MediaScannerConnection.scanFile(getContext(),
                     new String[]{mediaFile.getPath()},
-                    new String[]{"image/png"}, null);
+                    new String[]{"image/jpg"}, null);
             fo.close();
 
             return mediaFile.getAbsolutePath();
@@ -176,6 +176,13 @@ public class FragmentEncode extends Fragment {
             ex.printStackTrace();
         }
         return "";
+    }
+
+    private void saveImage(File mediaImage) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        Uri contentUri = Uri.fromFile(mediaImage);
+        mediaScanIntent.setData(contentUri);
+        getContext().sendBroadcast(mediaScanIntent);
     }
 
     private File getOutputMediaFile() throws IOException {
@@ -186,8 +193,9 @@ public class FragmentEncode extends Fragment {
             encodeImageDirectory.mkdirs();
         }
         String uniqueId = UUID.randomUUID().toString();
-        File mediaFile = new File(encodeImageDirectory, uniqueId + ".png");
+        File mediaFile = new File(encodeImageDirectory, uniqueId + ".jpg");
         mediaFile.createNewFile();
         return mediaFile;
     }
+
 }
