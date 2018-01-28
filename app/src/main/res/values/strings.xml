@@ -29,4 +29,10 @@
 
     <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
     <string name="app_logo_content_description">Image for app logo.</string>
+    <string name="edit_text_encode_hint">Enter message to encode here</string>
+    <string name="select_file_hint">Tap Browse button to select file.</string>
+    <string name="encode_text_preview">Text preview.</string>
+    <string name="btn_browse">TAP HERE TO SELECT FILE</string>
+    <string name="cancel_text_button">Cancel</string>
+    <string name="save_text_button">Save</string>
 </resources>
