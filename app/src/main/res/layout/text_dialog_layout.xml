@@ -39,6 +39,7 @@
                         android:minLines="1"
                         android:scrollbars="vertical"
                         android:layout_weight=".82"
+                        android:textSize="@dimen/secret_text_size"
                         android:hint="@string/edit_text_encode_hint" />
 
                     <LinearLayout android:id="@+id/encode_dialog_btn_tab"
@@ -91,6 +92,7 @@
                         android:layout_weight="0.60"
                         android:scrollbars="vertical"
                         android:textColor="@color/colorPrimaryDark"
+                        android:textSize="18sp"
                         android:text="@string/encode_text_preview"
                         android:background="@drawable/layout_border"/>
 
