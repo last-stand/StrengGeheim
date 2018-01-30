@@ -33,6 +33,6 @@
     <string name="select_file_hint">Tap Browse button to select file.</string>
     <string name="encode_text_preview">Text preview.</string>
     <string name="btn_browse">TAP HERE TO SELECT FILE</string>
-    <string name="cancel_text_button">Cancel</string>
-    <string name="save_text_button">Save</string>
+    <string name="cancel_button_text">CANCEL</string>
+    <string name="ok_button_text">OK</string>
 </resources>
