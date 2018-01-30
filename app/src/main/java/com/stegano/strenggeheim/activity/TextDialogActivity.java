@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ public class TextDialogActivity extends AppCompatActivity {
     private Button save_button1;
     private Button save_button2;
     private TextView text_preview;
+    private EditText textInput;
     private String secretText;
 
     @Override
@@ -41,12 +43,12 @@ public class TextDialogActivity extends AppCompatActivity {
         cancel_button2 = findViewById(R.id.cancel_button2);
         save_button1 = findViewById(R.id.save_button);
         save_button2 = findViewById(R.id.save_button2);
+        textInput = findViewById(R.id.encode_dialog_edit_text);
 
         tabHost = findViewById(R.id.tabHost);
         tabHost.setup();
 
         TabHost.TabSpec spec=tabHost.newTabSpec("tag1");
-
         spec.setContent(R.id.encode_dialog_text_tab);
         spec.setIndicator("Edit Text");
         tabHost.addTab(spec);
@@ -80,6 +82,7 @@ public class TextDialogActivity extends AppCompatActivity {
         save_button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                secretText = textInput.getText().toString();
                 getSecretText();
             }
         });
