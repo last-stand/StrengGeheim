@@ -54,14 +54,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
-                            android:text="@string/cancel_text_button" />
+                            android:text="@string/cancel_button_text" />
 
                         <Button android:textColor="@color/textColorPrimary"
-                            android:id="@+id/save_button"
+                            android:id="@+id/ok_button"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
-                            android:text="@string/save_text_button" />
+                            android:text="@string/ok_button_text" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -108,14 +108,14 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
-                            android:text="@string/cancel_text_button" />
+                            android:text="@string/cancel_button_text" />
 
                         <Button android:textColor="@color/textColorPrimary"
-                            android:id="@+id/save_button2"
+                            android:id="@+id/ok_button2"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight=".50"
-                            android:text="@string/save_text_button" />
+                            android:text="@string/ok_button_text" />
                     </LinearLayout>
 
                 </LinearLayout>

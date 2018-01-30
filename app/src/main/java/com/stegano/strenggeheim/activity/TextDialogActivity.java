@@ -26,8 +26,8 @@ public class TextDialogActivity extends AppCompatActivity {
     private Button browse;
     private Button cancel_button1;
     private Button cancel_button2;
-    private Button save_button1;
-    private Button save_button2;
+    private Button ok_button1;
+    private Button ok_button2;
     private TextView text_preview;
     private EditText textInput;
     private String secretText;
@@ -41,8 +41,8 @@ public class TextDialogActivity extends AppCompatActivity {
         text_preview = findViewById(R.id.text_preview);
         cancel_button1 = findViewById(R.id.cancel_button);
         cancel_button2 = findViewById(R.id.cancel_button2);
-        save_button1 = findViewById(R.id.save_button);
-        save_button2 = findViewById(R.id.save_button2);
+        ok_button1 = findViewById(R.id.ok_button);
+        ok_button2 = findViewById(R.id.ok_button2);
         textInput = findViewById(R.id.encode_dialog_edit_text);
 
         tabHost = findViewById(R.id.tabHost);
@@ -79,7 +79,7 @@ public class TextDialogActivity extends AppCompatActivity {
             }
         });
 
-        save_button1.setOnClickListener(new View.OnClickListener() {
+        ok_button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 secretText = textInput.getText().toString();
@@ -87,7 +87,7 @@ public class TextDialogActivity extends AppCompatActivity {
             }
         });
 
-        save_button2.setOnClickListener(new View.OnClickListener() {
+        ok_button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getSecretText();
@@ -97,7 +97,7 @@ public class TextDialogActivity extends AppCompatActivity {
     }
 
     private void getSecretText() {
-        if(!secretText.isEmpty()) {
+        if(secretText != null && !secretText.isEmpty()) {
             Intent intent = new Intent();
             intent.putExtra("popup_data", secretText);
             setResult(RESULT_OK, intent);
