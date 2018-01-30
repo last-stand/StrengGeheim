@@ -25,7 +25,10 @@ public class TextDialogActivity extends AppCompatActivity {
     private Button browse;
     private Button cancel_button1;
     private Button cancel_button2;
+    private Button save_button1;
+    private Button save_button2;
     private TextView text_preview;
+    private String secretText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class TextDialogActivity extends AppCompatActivity {
         text_preview = findViewById(R.id.text_preview);
         cancel_button1 = findViewById(R.id.cancel_button);
         cancel_button2 = findViewById(R.id.cancel_button2);
+        save_button1 = findViewById(R.id.save_button);
+        save_button2 = findViewById(R.id.save_button2);
 
         tabHost = findViewById(R.id.tabHost);
         tabHost.setup();
@@ -61,17 +66,40 @@ public class TextDialogActivity extends AppCompatActivity {
         cancel_button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                spec.dismiss();
+                finish();
             }
         });
 
         cancel_button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                spec.dismiss();
+                finish();
             }
         });
 
+        save_button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSecretText();
+            }
+        });
+
+        save_button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSecretText();
+            }
+        });
+
+    }
+
+    private void getSecretText() {
+        if(!secretText.isEmpty()) {
+            Intent intent = new Intent();
+            intent.putExtra("popup_data", secretText);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     private void showFileChooser() {
@@ -97,8 +125,8 @@ public class TextDialogActivity extends AppCompatActivity {
                     if (resultCode == RESULT_OK) {
                         Uri fileUri = data.getData();
                         filePath = fileUri.getPath();
-                        String fileText = readTextFromUri(fileUri);
-                        text_preview.setText(fileText);
+                        secretText = readTextFromUri(fileUri);
+                        text_preview.setText(secretText);
                     }
                     break;
             }
