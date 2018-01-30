@@ -37,8 +37,9 @@ public class FragmentEncode extends Fragment {
     private static final String MESSAGE_IMAGE_SAVED = "Image Saved!";;
     private static final String MESSAGE_FAILED = "Failed!";
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
-    private static final int GALLERY = 0, CAMERA = 1;
+    private static final int GALLERY = 0, CAMERA = 1, TEXTFILE = 2;
     private File imageFile;
+    private String secretText;
     TextView imageTextMessage;
     ImageView loadImage;
     Button textToEncodeButton;
@@ -97,7 +98,7 @@ public class FragmentEncode extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getContext(), TextDialogActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, TEXTFILE);
             }
         });
         return view;
@@ -152,6 +153,9 @@ public class FragmentEncode extends Fragment {
                 loadImage.setImageBitmap(bitmap);
                 Toast.makeText(getContext(), MESSAGE_IMAGE_SAVED, Toast.LENGTH_SHORT).show();
                 imageTextMessage.setVisibility(View.INVISIBLE);
+            }
+            else if (requestCode == TEXTFILE){
+                secretText = data.getExtras().getString("popup_data", "");
             }
         } catch (Exception ex) {
             ex.printStackTrace();
