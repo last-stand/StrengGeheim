@@ -50,7 +50,7 @@
         android:layout_weight="1.0">
 
         <Button
-            android:id="@+id/textToEncodeButton"
+            android:id="@+id/textInputButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8sp"
@@ -69,7 +69,6 @@
             android:layout_marginLeft="12sp"
             android:layout_marginRight="12sp"
             android:background="@color/colorButtonBackground"
-            android:onClick="decodeButtonClicked"
             android:text="@string/encode"
             android:textColor="@color/colorButtonText"
             android:textSize="@dimen/button_text_size" />
