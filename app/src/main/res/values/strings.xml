@@ -20,19 +20,21 @@
 
     <string name="title_activity_about_us">About us</string>
 
-    <string name="description_upload_image">Tap here to upload image.</string>
-    <string name="load_picture">Load Picture</string>
-    <string name="desc_encode_image">Image to encode</string>
-
+    <string name="description_upload_image">Tap here to upload image</string>
     <string name="password_edit_text_hint">Mandatory password, minimum 8 characters</string>
     <string name="enter_text">Enter Text</string>
 
-    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings.</string>
-    <string name="app_logo_content_description">Image for app logo.</string>
+    <string name="runtime_permissions_txt">Please enable ALL permissions from app settings</string>
+    <string name="app_logo_content_description">Image for app logo</string>
     <string name="edit_text_encode_hint">Enter message to encode here</string>
-    <string name="select_file_hint">Tap Browse button to select file.</string>
     <string name="encode_text_preview">Text preview.</string>
     <string name="btn_browse">TAP HERE TO SELECT FILE</string>
     <string name="cancel_button_text">CANCEL</string>
     <string name="ok_button_text">OK</string>
+
+    <string name="error_no_text">Please enter text to encode</string>
+    <string name="error_fail_message">Failed!</string>
+    <string name="error_encoding_failed">Encoding is failed</string>
+    <string name="message_encoding_success">Encoding is compeleted</string>
+    <string name="message_image_selected">Image selected</string>
 </resources>
