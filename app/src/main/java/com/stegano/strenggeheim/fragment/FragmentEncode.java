@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.stegano.strenggeheim.BuildConfig;
 import com.stegano.strenggeheim.R;
 import com.stegano.strenggeheim.activity.TextDialogActivity;
+import com.stegano.strenggeheim.utils.stego.Steganographer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,7 +40,7 @@ public class FragmentEncode extends Fragment {
     private static final int GALLERY = 0, CAMERA = 1, TEXTFILE = 2;
     private static int requestType;
     private File imageFile;
-    private Bitmap sourceBitmap;
+    private Bitmap bmpImage;
     private String secretText;
     TextView imageTextMessage;
     ImageView loadImage;
@@ -107,20 +109,13 @@ public class FragmentEncode extends Fragment {
             @Override
             public void onClick(View v) {
                 if(secretText != null && !secretText.isEmpty()){
-                    try {
-                        switch (requestType) {
-                            case GALLERY:
-                                saveImage(sourceBitmap, imageFile);
-                                break;
-                            case CAMERA:
-                                saveImage(imageFile);
-                                break;
-                        }
-                        showToastMessage(getString(R.string.message_encoding_success));
-                        secretText = "";
-                    }
-                    catch (Exception ex){
-                        showToastMessage(getString(R.string.error_encoding_failed));
+                    switch (requestType) {
+                        case GALLERY:
+                            saveImageFromGallery();
+                            break;
+                        case CAMERA:
+                            saveImageFromCamera();
+                            break;
                     }
                 }
                 else {
@@ -168,18 +163,16 @@ public class FragmentEncode extends Fragment {
         try {
             if (requestCode == GALLERY && data != null) {
                 requestType = GALLERY;
-                sourceBitmap = getBitmapFromData(data, getContext());
+                bmpImage = getBitmapFromData(data, getContext());
                 imageFile = getOutputMediaFile();
-                loadImage.setImageBitmap(sourceBitmap);
-                // saveImage(bitmap, imageFile);
+                loadImage.setImageBitmap(bmpImage);
                 showToastMessage(getString(R.string.message_image_selected));
                 imageTextMessage.setVisibility(View.INVISIBLE);
             }
             else if (requestCode == CAMERA) {
                 requestType = CAMERA;
-                // saveImage(imageFile);
-                sourceBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                loadImage.setImageBitmap(sourceBitmap);
+                bmpImage = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                loadImage.setImageBitmap(bmpImage);
                 showToastMessage(getString(R.string.message_image_selected));
                 imageTextMessage.setVisibility(View.INVISIBLE);
             }
@@ -203,23 +196,31 @@ public class FragmentEncode extends Fragment {
         return BitmapFactory.decodeFile(picturePath);
     }
 
-    private String saveImage(Bitmap bmpImage, File mediaFile)  throws IOException{
-        Bitmap newBmpImage = bmpImage.copy(Bitmap.Config.ARGB_8888, true);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        newBmpImage.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-        FileOutputStream fo = new FileOutputStream(mediaFile);
-        fo.write(bytes.toByteArray());
-        MediaScannerConnection.scanFile(getContext(),
-                new String[]{mediaFile.getPath()},
-                new String[]{"image/jpg"}, null);
-        fo.close();
-
-        return mediaFile.getAbsolutePath();
+    private String saveImageFromGallery() {
+        try {
+            Bitmap newBmpImage = bmpImage.copy(Bitmap.Config.ARGB_8888, true);
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            newBmpImage.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+            FileOutputStream fo = new FileOutputStream(imageFile);
+            fo.write(bytes.toByteArray());
+            encodeTextIntoImage();
+            fo.flush();
+            fo.close();
+            MediaScannerConnection.scanFile(getContext(),
+                    new String[]{imageFile.getPath()},
+                    new String[]{"image/jpg"}, null);
+            return imageFile.getAbsolutePath();
+        }
+        catch (IOException ex){
+            showToastMessage(getString(R.string.error_file_not_saved));
+        }
+        return "";
     }
 
-    private void saveImage(File mediaImage) {
+    private void saveImageFromCamera() {
+        encodeTextIntoImage();
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(mediaImage);
+        Uri contentUri = Uri.fromFile(imageFile);
         mediaScanIntent.setData(contentUri);
         getContext().sendBroadcast(mediaScanIntent);
     }
@@ -237,9 +238,36 @@ public class FragmentEncode extends Fragment {
         return mediaFile;
     }
 
-    private void showToastMessage(String message){
-        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-        toast.show();
+    private void showToastMessage(final String message){
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+    }
+
+    private void encodeTextIntoImage() {
+        new Thread(new Runnable() {
+            @Override public void run() {
+                try {
+                    imageFile = Steganographer.withInput(imageFile).encode(secretText).intoFile(imageFile);
+                    String decodedMessage = Steganographer.withInput(imageFile).decode().intoString();
+                    reset();
+                    Log.d(getClass().getSimpleName(), "Decoded Message: " + decodedMessage);
+                    showToastMessage(getString(R.string.message_encoding_success));
+                } catch (Exception e) {
+                    showToastMessage(getString(R.string.error_encoding_failed));
+                }
+            }
+        }).start();
+    }
+
+    private void reset(){
+        secretText = "";
+        imageFile = null;
+        bmpImage = null;
+        secretText = null;
     }
 
 }

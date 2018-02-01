@@ -293,27 +293,4 @@ public class MainActivity extends RuntimePermissionsActivity {
             return mFragmentTitleList.get(position);
         }
     }
-
-
-    // Encode Invoker
-    private void go(){
-        new Thread(new Runnable() {
-            @Override public void run() {
-                try {
-                    attempEncoding();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    private void attempEncoding() throws Exception{
-        String hiddenMessage = "Hello this is a hidden message";
-        Bitmap bitmap = BitmapHelper.createTestBitmap(200, 200);
-        Bitmap encodedBitmap = Steganographer.withInput(bitmap).encode(hiddenMessage).intoBitmap();
-        String decodedMessage = Steganographer.withInput(encodedBitmap).decode().intoString();
-        Log.d(getClass().getSimpleName(), "Decoded Message: " + decodedMessage);
-
-    }
 }
