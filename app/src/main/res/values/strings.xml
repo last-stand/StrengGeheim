@@ -20,7 +20,7 @@
 
     <string name="title_activity_about_us">About us</string>
 
-    <string name="description_upload_image">Tap here to upload image</string>
+    <string name="description_upload_image">Tap here to select image</string>
     <string name="password_edit_text_hint">Mandatory password, minimum 8 characters</string>
     <string name="enter_text">Enter Text</string>
 

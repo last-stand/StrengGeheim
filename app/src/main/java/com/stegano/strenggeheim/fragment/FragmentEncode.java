@@ -117,6 +117,8 @@ public class FragmentEncode extends Fragment {
                             saveImageFromCamera();
                             break;
                     }
+                    loadImage.setImageResource(android.R.color.transparent);
+                    imageTextMessage.setVisibility(View.VISIBLE);
                 }
                 else {
                     showToastMessage(getString(R.string.error_no_text));
@@ -203,9 +205,9 @@ public class FragmentEncode extends Fragment {
             newBmpImage.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
             FileOutputStream fo = new FileOutputStream(imageFile);
             fo.write(bytes.toByteArray());
-            encodeTextIntoImage();
             fo.flush();
             fo.close();
+            encodeTextIntoImage();
             MediaScannerConnection.scanFile(getContext(),
                     new String[]{imageFile.getPath()},
                     new String[]{"image/jpg"}, null);
@@ -253,14 +255,23 @@ public class FragmentEncode extends Fragment {
                 try {
                     imageFile = Steganographer.withInput(imageFile).encode(secretText).intoFile(imageFile);
                     String decodedMessage = Steganographer.withInput(imageFile).decode().intoString();
-                    reset();
                     Log.d(getClass().getSimpleName(), "Decoded Message: " + decodedMessage);
                     showToastMessage(getString(R.string.message_encoding_success));
                 } catch (Exception e) {
+                    deleteFile();
                     showToastMessage(getString(R.string.error_encoding_failed));
+                }
+                finally {
+                    reset();
                 }
             }
         }).start();
+    }
+
+    private void deleteFile(){
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
     }
 
     private void reset(){
@@ -268,6 +279,7 @@ public class FragmentEncode extends Fragment {
         imageFile = null;
         bmpImage = null;
         secretText = null;
+        requestType = -1;
     }
 
 }
