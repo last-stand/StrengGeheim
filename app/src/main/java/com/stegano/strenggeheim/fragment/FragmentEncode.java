@@ -108,7 +108,15 @@ public class FragmentEncode extends Fragment {
         encodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(secretText != null && !secretText.isEmpty()){
+                if(!isTextExist()) {
+                    showToastMessage(getString(R.string.error_no_text));
+                    return;
+                }
+                else if(!isImageExist()) {
+                    showToastMessage(getString(R.string.error_no_image));
+                    return;
+                }
+                else {
                     switch (requestType) {
                         case GALLERY:
                             saveImageFromGallery();
@@ -120,12 +128,17 @@ public class FragmentEncode extends Fragment {
                     loadImage.setImageResource(android.R.color.transparent);
                     imageTextMessage.setVisibility(View.VISIBLE);
                 }
-                else {
-                    showToastMessage(getString(R.string.error_no_text));
-                }
             }
         });
         return view;
+    }
+
+    private boolean isImageExist() {
+        return imageFile != null && imageFile.exists();
+    }
+
+    private boolean isTextExist() {
+        return secretText != null && !secretText.isEmpty();
     }
 
     private void showPictureDialog(){
@@ -269,7 +282,7 @@ public class FragmentEncode extends Fragment {
     }
 
     private void deleteFile(){
-        if (imageFile.exists()) {
+        if (isImageExist()) {
             imageFile.delete();
         }
     }
