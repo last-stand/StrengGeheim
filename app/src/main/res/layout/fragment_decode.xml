@@ -1,15 +1,68 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.FragmentDecode">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/decode"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="@dimen/load_image_layout_margin_top"
+        android:background="@drawable/layout_border">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/loadImageDecode"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/load_image_decode"
+            android:gravity="center"
+            android:paddingTop="2sp"
+            android:contentDescription="@string/description_upload_image"
+            android:scaleType="centerInside" />
+
+        <TextView
+            android:id="@+id/imageTextDecodeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|center"
+            android:drawableStart="@drawable/ic_open_image"
+            android:gravity="center"
+            android:text="@string/description_upload_image"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+    <EditText android:textColor="@color/colorPrimaryDark"
+        android:gravity="start"
+        android:id="@+id/passwordToDecode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12sp"
+        android:layout_marginRight="12sp"
+        android:layout_marginTop="12sp"
+        android:hint="@string/password_to_decode_hint"
+        android:maxLength="16"
+        android:visibility="gone"
+        android:inputType="textPassword" />
+
+    <LinearLayout android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="0dp"
+        android:layout_weight="1.0">
+
+        <Button
+            android:id="@+id/decodeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8sp"
+            android:layout_marginBottom="10sp"
+            android:layout_marginLeft="12sp"
+            android:layout_marginRight="12sp"
+            android:background="@color/colorButtonBackground"
+            android:text="@string/decode"
+            android:textColor="@color/colorButtonText"
+            android:textSize="@dimen/button_text_size" />
+
+    </LinearLayout>
+
+</LinearLayout>

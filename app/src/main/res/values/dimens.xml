@@ -17,6 +17,7 @@
     <dimen name="load_image_layout_margin_top">1sp</dimen>
     <dimen name="nav_header_margin_start">26sp</dimen>
     <dimen name="load_image_encode">300sp</dimen>
+    <dimen name="load_image_decode">300sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
     <dimen name="secret_text_size">18sp</dimen>
 </resources>
