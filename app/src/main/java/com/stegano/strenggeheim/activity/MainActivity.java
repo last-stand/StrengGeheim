@@ -2,7 +2,6 @@ package com.stegano.strenggeheim.activity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -28,8 +27,6 @@ import com.stegano.strenggeheim.fragment.FragmentDecode;
 import com.stegano.strenggeheim.fragment.FragmentEncode;
 import com.stegano.strenggeheim.fragment.HomeFragment;
 import com.stegano.strenggeheim.fragment.SettingsFragment;
-import com.stegano.strenggeheim.utils.stego.BitmapHelper;
-import com.stegano.strenggeheim.utils.stego.Steganographer;
 
 import java.util.ArrayList;
 import java.util.List;

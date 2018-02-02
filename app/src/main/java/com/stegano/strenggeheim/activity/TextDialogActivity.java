@@ -154,6 +154,4 @@ public class TextDialogActivity extends AppCompatActivity {
         inputStream.close();
         return stringBuilder.toString();
     }
-
-
 }
