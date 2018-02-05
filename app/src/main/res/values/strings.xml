@@ -38,6 +38,8 @@
     <string name="error_fail_message">Failed!</string>
     <string name="error_encoding_failed">Encoding is failed</string>
     <string name="message_encoding_success">Encoding is compeleted</string>
+    <string name="message_decoding_success">Decoding is compeleted</string>
+    <string name="error_decoding_failed">Decoding is failed</string>
     <string name="message_image_selected">Image selected</string>
     <string name="error_file_not_saved">Error in saving encoded file</string>
 </resources>
