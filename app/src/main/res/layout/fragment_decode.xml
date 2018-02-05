@@ -11,7 +11,7 @@
         android:background="@drawable/layout_border">
 
         <ImageView
-            android:id="@+id/loadImageDecode"
+            android:id="@+id/loadDecodeImage"
             android:layout_width="match_parent"
             android:layout_height="@dimen/load_image_decode"
             android:gravity="center"

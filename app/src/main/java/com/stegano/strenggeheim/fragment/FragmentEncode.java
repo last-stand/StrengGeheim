@@ -267,8 +267,6 @@ public class FragmentEncode extends Fragment {
             @Override public void run() {
                 try {
                     imageFile = Steganographer.withInput(imageFile).encode(secretText).intoFile(imageFile);
-                    String decodedMessage = Steganographer.withInput(imageFile).decode().intoString();
-                    Log.d(getClass().getSimpleName(), "Decoded Message: " + decodedMessage);
                     showToastMessage(getString(R.string.message_encoding_success));
                 } catch (Exception e) {
                     deleteFile();
