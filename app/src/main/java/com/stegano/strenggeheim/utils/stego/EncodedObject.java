@@ -34,6 +34,8 @@ public class EncodedObject {
         //write the bytes in file
         FileOutputStream fo = new FileOutputStream(file);
         fo.write(bytes.toByteArray());
+        fo.flush();
+        fo.close();
 
         return file;
     }

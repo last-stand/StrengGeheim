@@ -43,7 +43,6 @@
     <string name="message_decoding_success">Decoding is compeleted</string>
     <string name="error_decoding_failed">Decoding is failed</string>
     <string name="message_image_selected">Image selected</string>
-    <string name="error_file_not_saved">Error in saving encoded file</string>
     <string name="decoded_text">Decoded Text</string>
     <string name="error_no_encoded_text">No text encoded to this image</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
