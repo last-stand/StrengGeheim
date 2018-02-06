@@ -1,5 +1,8 @@
 package com.stegano.strenggeheim.fragment;
 
+import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,6 +31,9 @@ public class FragmentDecode extends Fragment {
     private Button decodeButton;
     private Bitmap bmpImage;
     private TextView imageTextMessage;
+    private TextView decodedText;
+    private Button closeButton;
+    private Button copyButton;
     private String decodedMessage;
 
     public FragmentDecode(){
@@ -59,12 +65,48 @@ public class FragmentDecode extends Fragment {
         decodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                decodeTextFromImage();
+                if(!isImageSelected()){
+                    showToastMessage(getString(R.string.error_no_image));
+                    return;
+                }
+                else {
+                    decodeTextFromImage();
+                    final Dialog dialog = new Dialog(getContext());
+                    dialog.setContentView(R.layout.decode_text_dialog_layout);
+
+                    decodedText = dialog.findViewById(R.id.decodedText);
+                    decodedText.setText(decodedMessage);
+                    closeButton = dialog.findViewById(R.id.close_button);
+                    copyButton = dialog.findViewById(R.id.copy_button);
+
+                    closeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    copyButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ClipboardManager clipboard = (ClipboardManager)
+                                    getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("SecretText", decodedMessage);
+                            clipboard.setPrimaryClip(clip);
+                            showToastMessage(getString(R.string.copied_to_clipboard));
+                        }
+                    });
+
+                    dialog.show();
+                }
             }
         });
 
-
         return view;
+    }
+
+    private boolean isImageSelected() {
+        return decodeImage != null;
     }
 
     private void galleryIntent() {

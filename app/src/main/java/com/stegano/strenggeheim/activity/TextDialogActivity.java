@@ -35,7 +35,7 @@ public class TextDialogActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.text_dialog_layout);
+        setContentView(R.layout.encode_text_dialog_layout);
 
         browse = findViewById(R.id.browse_file_button);
         text_preview = findViewById(R.id.text_preview);
@@ -136,7 +136,7 @@ public class TextDialogActivity extends AppCompatActivity {
         }
         catch (Exception ex){
             Toast.makeText(this, "Unable to open file " + filePath,
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

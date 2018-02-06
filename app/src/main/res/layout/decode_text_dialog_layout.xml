@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:minHeight="@dimen/dialog_min_height"
+    android:minWidth="@dimen/dialog_min_width"
+    android:theme="@style/Theme.AppCompat.Dialog">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent">
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="0sp"
+            android:layout_weight=".10"
+            android:paddingTop="@dimen/dialog_decode_title_padding"
+            android:paddingBottom="@dimen/dialog_decode_title_padding"
+            android:textSize="@dimen/button_text_size"
+            android:textColor="@color/textColorPrimary"
+            android:text="@string/decoded_text"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/decodedText"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="start"
+        android:layout_weight=".72"
+        android:padding="@dimen/dialog_decode_text_padding"
+        android:scrollbars="vertical"
+        android:textSize="@dimen/secret_text_size"
+        android:text="@string/encode_text_preview"
+        android:background="@drawable/layout_border"/>
+
+    <LinearLayout android:id="@+id/encode_dialog_btn_tab2"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <Button android:textColor="@color/textColorPrimary"
+            android:id="@+id/close_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:text="@string/close_button_text" />
+
+        <Button android:textColor="@color/textColorPrimary"
+            android:id="@+id/copy_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".50"
+            android:text="@string/copy_button_text" />
+    </LinearLayout>
+
+</LinearLayout>
