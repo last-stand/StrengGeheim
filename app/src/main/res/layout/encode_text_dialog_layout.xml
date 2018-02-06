@@ -5,8 +5,8 @@
     android:tag="LOL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minHeight="400sp"
-    android:minWidth="360sp">
+    android:minHeight="@dimen/dialog_min_height"
+    android:minWidth="@dimen/dialog_min_width">
 
     <TabHost android:id="@+id/tabHost"
         android:layout_width="match_parent"
@@ -90,9 +90,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="0sp"
                         android:layout_weight="0.60"
+                        android:padding="@dimen/dialog_decode_text_padding"
                         android:scrollbars="vertical"
                         android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/secret_text_size"
                         android:text="@string/encode_text_preview"
                         android:background="@drawable/layout_border"/>
 

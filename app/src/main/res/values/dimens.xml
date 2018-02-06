@@ -20,4 +20,8 @@
     <dimen name="load_image_decode">300sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
     <dimen name="secret_text_size">18sp</dimen>
+    <dimen name="dialog_min_height">400sp</dimen>
+    <dimen name="dialog_min_width">360sp</dimen>
+    <dimen name="dialog_decode_title_padding">6sp</dimen>
+    <dimen name="dialog_decode_text_padding">6sp</dimen>
 </resources>

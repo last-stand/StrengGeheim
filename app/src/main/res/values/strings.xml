@@ -32,6 +32,8 @@
     <string name="btn_browse">TAP HERE TO SELECT FILE</string>
     <string name="cancel_button_text">CANCEL</string>
     <string name="ok_button_text">OK</string>
+    <string name="close_button_text">CLOSE</string>
+    <string name="copy_button_text">COPY</string>
 
     <string name="error_no_text">Please enter text to encode</string>
     <string name="error_no_image">Please select image</string>
@@ -42,4 +44,7 @@
     <string name="error_decoding_failed">Decoding is failed</string>
     <string name="message_image_selected">Image selected</string>
     <string name="error_file_not_saved">Error in saving encoded file</string>
+    <string name="decoded_text">Decoded Text</string>
+    <string name="error_no_encoded_text">No text encoded to this image</string>
+    <string name="copied_to_clipboard">Copied to clipboard.</string>
 </resources>
