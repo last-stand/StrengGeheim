@@ -149,13 +149,9 @@ public class MainActivity extends RuntimePermissionsActivity {
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
-                // home
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
-                //viewPager.setCurrentItem(0, false);
-
             case 1:
-                // settings fragment
                 SettingsFragment settingsFragment = new SettingsFragment();
                 return settingsFragment;
             default:

@@ -114,7 +114,7 @@ public class TextDialogActivity extends AppCompatActivity {
             startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"),
                     FILE_SELECT_CODE);
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "Please install a File Manager.",
+            Toast.makeText(this, R.string.msg_install_file_manager,
                     Toast.LENGTH_SHORT).show();
         }
     }

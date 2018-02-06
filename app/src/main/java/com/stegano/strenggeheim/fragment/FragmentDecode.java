@@ -129,7 +129,9 @@ public class FragmentDecode extends Fragment {
                 imageTextMessage.setVisibility(View.INVISIBLE);
             }
         }
-        catch(Exception ex){}
+        catch(Exception ex){
+            showToastMessage(getString(R.string.error_fail_message));
+        }
     }
 
     private Bitmap getBitmapFromData(Intent intent, Context context){
