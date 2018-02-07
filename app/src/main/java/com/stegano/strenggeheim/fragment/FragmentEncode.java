@@ -37,6 +37,7 @@ import java.util.UUID;
 public class FragmentEncode extends Fragment {
     private static final String IMAGE_DIRECTORY = "/StrengGeheim";
     private static final int GALLERY = 0, CAMERA = 1, TEXTFILE = 2;
+    private static int COMPRESS_QUALITY = 60;
     private static int requestType;
     private File imageFile;
     private Bitmap bmpImage;
@@ -124,8 +125,6 @@ public class FragmentEncode extends Fragment {
                             encodeImageFromCamera();
                             break;
                     }
-                    loadImage.setImageResource(android.R.color.transparent);
-                    imageTextMessage.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -185,7 +184,8 @@ public class FragmentEncode extends Fragment {
             }
             else if (requestCode == CAMERA) {
                 requestType = CAMERA;
-                bmpImage = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+                bmpImage = compressBitmap(bitmap);
                 loadImage.setImageBitmap(bmpImage);
                 showToastMessage(getString(R.string.message_image_selected));
                 imageTextMessage.setVisibility(View.INVISIBLE);
@@ -207,15 +207,20 @@ public class FragmentEncode extends Fragment {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
-        return BitmapFactory.decodeFile(picturePath);
+        Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+        return compressBitmap(bitmap);
+    }
+
+    private Bitmap compressBitmap(Bitmap bmp){
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, byteOutputStream);
+        Bitmap newBmp = BitmapFactory.decodeStream(new ByteArrayInputStream(byteOutputStream.toByteArray()));
+        return newBmp;
     }
 
     private String encodeImageFromGallery() {
         try {
-            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-            bmpImage.compress(Bitmap.CompressFormat.JPEG, 60, byteOutputStream);
-            Bitmap newBmp = BitmapFactory.decodeStream(new ByteArrayInputStream(byteOutputStream.toByteArray()));
-            Steganographer.withInput(newBmp).encode(secretText).intoFile(imageFile);
+            Steganographer.withInput(bmpImage).encode(secretText).intoFile(imageFile);
             MediaScannerConnection.scanFile(getContext(),
                     new String[]{imageFile.getPath()},
                     new String[]{"image/jpg"}, null);
@@ -234,7 +239,7 @@ public class FragmentEncode extends Fragment {
 
     private void encodeImageFromCamera() {
         try {
-            Steganographer.withInput(imageFile).encode(secretText).intoFile(imageFile);
+            Steganographer.withInput(bmpImage).encode(secretText).intoFile(imageFile);
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(imageFile);
             mediaScanIntent.setData(contentUri);
@@ -275,6 +280,8 @@ public class FragmentEncode extends Fragment {
         bmpImage = null;
         secretText = null;
         requestType = -1;
+        loadImage.setImageResource(android.R.color.transparent);
+        imageTextMessage.setVisibility(View.VISIBLE);
     }
 
     private void showToastMessage(final String message){
