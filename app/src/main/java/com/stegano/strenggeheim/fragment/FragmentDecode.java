@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -147,26 +146,17 @@ public class FragmentDecode extends Fragment {
     }
 
     private void showToastMessage(final String message){
-        getActivity().runOnUiThread(new Runnable() {
-            public void run() {
-                Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+        Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void decodeTextFromImage() {
-        new Thread(new Runnable() {
-            @Override public void run() {
-                try {
-                    decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
-                    Log.d(getClass().getSimpleName(), "Decoded Message: " + decodedMessage);
-                    showToastMessage(getString(R.string.message_encoding_success));
-                } catch (Exception e) {
-                    showToastMessage(getString(R.string.error_decoding_failed));
-                }
-            }
-        }).start();
+        try {
+            decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
+            showToastMessage(getString(R.string.message_decoding_success));
+        } catch (Exception e) {
+            showToastMessage(getString(R.string.error_decoding_failed));
+        }
     }
 
 }

@@ -34,9 +34,9 @@
         android:gravity="start"
         android:layout_weight=".72"
         android:padding="@dimen/dialog_decode_text_padding"
+        android:maxLines="140"
         android:scrollbars="vertical"
         android:textSize="@dimen/secret_text_size"
-        android:text="@string/encode_text_preview"
         android:background="@drawable/layout_border"/>
 
     <LinearLayout android:id="@+id/encode_dialog_btn_tab2"
