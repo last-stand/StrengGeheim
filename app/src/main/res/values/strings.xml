@@ -45,6 +45,7 @@
     <string name="message_image_selected">Image selected</string>
     <string name="decoded_text">Decoded Text</string>
     <string name="error_no_encoded_text">No text encoded to this image</string>
-    <string name="copied_to_clipboard">Copied to clipboard.</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="nothing_to_copy">Nothing to copy</string>
     <string name="msg_install_file_manager">Please install a File Manager</string>
 </resources>
