@@ -17,7 +17,8 @@
             android:gravity="center"
             android:paddingTop="2sp"
             android:contentDescription="@string/description_upload_image"
-            android:scaleType="centerInside" />
+            android:adjustViewBounds ="true"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/imageTextMessage"

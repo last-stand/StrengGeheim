@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.stegano.strenggeheim.utils.stego.Steganographer;
 public class FragmentDecode extends Fragment {
 
     private static final int GALLERY = 0;
+    private static final String DEFAULT_TEXT = "Nothing to show";
     private ImageView decodeImage;
     private Button decodeButton;
     private Bitmap bmpImage;
@@ -69,18 +71,18 @@ public class FragmentDecode extends Fragment {
                     return;
                 }
                 else {
-                    decodeTextFromImage();
                     final Dialog dialog = new Dialog(getContext());
                     dialog.setContentView(R.layout.decode_text_dialog_layout);
 
                     decodedText = dialog.findViewById(R.id.decodedText);
-                    decodedText.setText(decodedMessage);
+                    decodedText.setMovementMethod(new ScrollingMovementMethod());
                     closeButton = dialog.findViewById(R.id.close_button);
                     copyButton = dialog.findViewById(R.id.copy_button);
 
                     closeButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            decodedMessage = "";
                             dialog.dismiss();
                         }
                     });
@@ -88,6 +90,10 @@ public class FragmentDecode extends Fragment {
                     copyButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            if (!isDecodedMessageExist()) {
+                                showToastMessage(getString(R.string.nothing_to_copy));
+                                return;
+                            }
                             ClipboardManager clipboard = (ClipboardManager)
                                     getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                             ClipData clip = ClipData.newPlainText("SecretText", decodedMessage);
@@ -96,7 +102,16 @@ public class FragmentDecode extends Fragment {
                         }
                     });
 
-                    dialog.show();
+                    try {
+                        decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
+                        decodedText.setText(decodedMessage);
+                        showToastMessage(getString(R.string.message_decoding_success));
+
+                        dialog.show();
+                    }catch (Exception e) {
+                        decodedText.setText(DEFAULT_TEXT);
+                        showToastMessage(getString(R.string.error_decoding_failed));
+                    }
                 }
             }
         });
@@ -105,7 +120,11 @@ public class FragmentDecode extends Fragment {
     }
 
     private boolean isImageSelected() {
-        return decodeImage != null;
+        return bmpImage != null;
+    }
+
+    private boolean isDecodedMessageExist(){
+        return decodedMessage != null && !decodedMessage.isEmpty();
     }
 
     private void galleryIntent() {
@@ -149,14 +168,4 @@ public class FragmentDecode extends Fragment {
         Toast toast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         toast.show();
     }
-
-    private void decodeTextFromImage() {
-        try {
-            decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
-            showToastMessage(getString(R.string.message_decoding_success));
-        } catch (Exception e) {
-            showToastMessage(getString(R.string.error_decoding_failed));
-        }
-    }
-
 }
