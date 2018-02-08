@@ -13,7 +13,7 @@
 
     <style name="AppTabIndicatorLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorColor">?attr/colorAccent</item>
-        <item name="tabIndicatorHeight">6sp</item>
+        <item name="tabIndicatorHeight">3sp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
