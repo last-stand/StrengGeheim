@@ -101,18 +101,15 @@ public class Steganographer {
     }
 
     public EncodedObject encode(@NonNull String string) throws Exception {
-        return encode(string.getBytes());
-    }
 
-    public EncodedObject encode(@NonNull byte[] bytes) throws Exception {
-
+        byte[] bytes = string.getBytes();
         // Check there is enough space for bitmap to be encoded into image
         if (bytes.length>bytesAvaliableInBitmap()){
             throw new IllegalArgumentException("Not enough space in bitmap to hold data (max:"+bytesAvaliableInBitmap()+")");
         }
 
         // Create an encoded object from our bitmap
-        return new EncodedObject(BitmapEncoder.encode(inBitmap, bytes));
+        return new EncodedObject(BitmapEncoder.encode(inBitmap, string));
     }
 
     /**
@@ -121,7 +118,7 @@ public class Steganographer {
      */
     private int bytesAvaliableInBitmap() {
         if (inBitmap == null) return 0;
-        return (inBitmap.getWidth() * inBitmap.getHeight())*3/8 - BitmapEncoder.HEADER_SIZE;
+        return (inBitmap.getWidth() * inBitmap.getHeight())*3/8;
     }
 
 }
