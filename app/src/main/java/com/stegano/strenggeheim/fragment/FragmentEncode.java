@@ -1,5 +1,6 @@
 package com.stegano.strenggeheim.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,6 +47,7 @@ public class FragmentEncode extends Fragment {
     ImageView loadImage;
     Button textInputButton;
     Button encodeButton;
+    ProgressDialog progress;
 
     public FragmentEncode() {
     }
@@ -89,6 +91,8 @@ public class FragmentEncode extends Fragment {
         loadImage =  view.findViewById(R.id.loadImage);
         textInputButton = view.findViewById(R.id.textInputButton);
         encodeButton = view.findViewById(R.id.encodeButton);
+
+        initializeProgressDialog();
 
         loadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,41 +222,66 @@ public class FragmentEncode extends Fragment {
         return newBmp;
     }
 
-    private String encodeImageFromGallery() {
-        try {
-            Steganographer.withInput(bmpImage).encode(secretText).intoFile(imageFile);
-            MediaScannerConnection.scanFile(getContext(),
-                    new String[]{imageFile.getPath()},
-                    new String[]{"image/jpg"}, null);
-            showToastMessage(getString(R.string.message_encoding_success));
-            return imageFile.getAbsolutePath();
-        }
-        catch (Exception ex){
-            deleteFile();
-            showToastMessage(getString(R.string.error_encoding_failed));
-        }
-        finally {
-            reset();
-        }
-        return "";
+    private void encodeImageFromGallery() {
+        progress.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                encode();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isImageExist()) {
+                            MediaScannerConnection.scanFile(getContext(),
+                                    new String[]{imageFile.getPath()},
+                                    new String[]{"image/jpg"}, null);
+                            showToastMessage(getString(R.string.message_encoding_success));
+                        }
+                        reset();
+                    }
+                });
+            }
+        }).start();
     }
 
     private void encodeImageFromCamera() {
+        progress.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                encode();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isImageExist()) {
+                            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                            Uri contentUri = Uri.fromFile(imageFile);
+                            mediaScanIntent.setData(contentUri);
+                            getContext().sendBroadcast(mediaScanIntent);
+                            showToastMessage(getString(R.string.message_encoding_success));
+                        }
+                        reset();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void encode() {
         try {
             Steganographer.withInput(bmpImage).encode(secretText).intoFile(imageFile);
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            Uri contentUri = Uri.fromFile(imageFile);
-            mediaScanIntent.setData(contentUri);
-            getContext().sendBroadcast(mediaScanIntent);
-            showToastMessage(getString(R.string.message_encoding_success));
         }
-        catch (Exception ex){
+        catch (Exception e) {
             deleteFile();
             showToastMessage(getString(R.string.error_encoding_failed));
         }
-        finally {
-            reset();
-        }
+    }
+
+    private void initializeProgressDialog(){
+        progress = new ProgressDialog(getContext());
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while encoding...");
+        progress.setCancelable(false);
     }
 
     private File getOutputMediaFile() throws IOException {
@@ -280,6 +309,7 @@ public class FragmentEncode extends Fragment {
         bmpImage = null;
         secretText = null;
         requestType = -1;
+        progress.dismiss();
         loadImage.setImageResource(android.R.color.transparent);
         imageTextMessage.setVisibility(View.VISIBLE);
     }
