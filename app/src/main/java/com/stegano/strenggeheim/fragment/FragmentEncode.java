@@ -59,7 +59,8 @@ public class FragmentEncode extends Fragment {
     }
 
     private void galleryIntent() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GALLERY);
     }
@@ -279,7 +280,7 @@ public class FragmentEncode extends Fragment {
 
     private void initializeProgressDialog(){
         progress = new ProgressDialog(getContext());
-        progress.setTitle("Loading");
+        progress.setTitle("Encoding");
         progress.setMessage("Wait while encoding...");
         progress.setCancelable(false);
     }

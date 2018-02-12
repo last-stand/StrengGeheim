@@ -1,6 +1,7 @@
 package com.stegano.strenggeheim.fragment;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -36,6 +37,7 @@ public class FragmentDecode extends Fragment {
     private Button closeButton;
     private Button copyButton;
     private String decodedMessage;
+    ProgressDialog progress;
 
     public FragmentDecode(){
     }
@@ -55,6 +57,8 @@ public class FragmentDecode extends Fragment {
         decodeButton = view.findViewById(R.id.decodeButton);
         imageTextMessage = view.findViewById(R.id.imageTextDecodeMessage);
         decodeImage = view.findViewById(R.id.loadDecodeImage);
+
+        initializeProgressDialog();
 
         decodeImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,21 +106,51 @@ public class FragmentDecode extends Fragment {
                         }
                     });
 
-                    try {
-                        decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
-                        decodedText.setText(decodedMessage);
-                        showToastMessage(getString(R.string.message_decoding_success));
+                    getDecodedText(dialog);
 
-                        dialog.show();
-                    }catch (Exception e) {
-                        decodedText.setText(DEFAULT_TEXT);
-                        showToastMessage(getString(R.string.error_decoding_failed));
-                    }
                 }
             }
         });
 
         return view;
+    }
+
+    private void getDecodedText(final Dialog dialog) {
+        progress.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                decode();
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isDecodedMessageExist()) {
+                            decodedText.setText(decodedMessage);
+                            showToastMessage(getString(R.string.message_decoding_success));
+                            dialog.show();
+                        }
+                        progress.dismiss();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void decode(){
+        try {
+            decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
+        }
+        catch (Exception e) {
+            decodedText.setText(DEFAULT_TEXT);
+            showToastMessage(getString(R.string.error_decoding_failed));
+        }
+    }
+
+    private void initializeProgressDialog(){
+        progress = new ProgressDialog(getContext());
+        progress.setTitle("Decoding");
+        progress.setMessage("Wait while decoding...");
+        progress.setCancelable(false);
     }
 
     private boolean isImageSelected() {
@@ -128,7 +162,8 @@ public class FragmentDecode extends Fragment {
     }
 
     private void galleryIntent() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GALLERY);
     }
