@@ -275,6 +275,9 @@ public class FragmentEncode extends Fragment {
                             getContext().sendBroadcast(mediaScanIntent);
                             showToastMessage(getString(R.string.message_encoding_success));
                         }
+                        else {
+                            showToastMessage(getString(R.string.error_encoding_failed));
+                        }
                         reset();
                     }
                 });
@@ -288,7 +291,6 @@ public class FragmentEncode extends Fragment {
         }
         catch (Exception e) {
             deleteFile();
-            showToastMessage(getString(R.string.error_encoding_failed));
         }
     }
 

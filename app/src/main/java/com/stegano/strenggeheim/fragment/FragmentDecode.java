@@ -134,6 +134,10 @@ public class FragmentDecode extends Fragment {
                             showToastMessage(getString(R.string.message_decoding_success));
                             dialog.show();
                         }
+                        else {
+                            decodedText.setText(DEFAULT_TEXT_MESSAGE);
+                            showToastMessage(getString(R.string.error_decoding_failed));
+                        }
                         progress.dismiss();
                     }
                 });
@@ -146,8 +150,7 @@ public class FragmentDecode extends Fragment {
             decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
         }
         catch (Exception e) {
-            decodedText.setText(DEFAULT_TEXT_MESSAGE);
-            showToastMessage(getString(R.string.error_decoding_failed));
+            decodedMessage = "";
         }
     }
 
