@@ -20,6 +20,7 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,6 +29,7 @@
         </activity>
         <activity
             android:name=".activity.AboutUsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_about_us"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:parentActivityName=".activity.MainActivity" >
@@ -38,6 +40,7 @@
         </activity>
         <activity
             android:name=".activity.TextDialogActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:label="Secret Message">
         </activity>
