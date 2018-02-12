@@ -6,6 +6,8 @@ import android.webkit.WebView;
 
 import com.stegano.strenggeheim.R;
 
+import static com.stegano.strenggeheim.Constants.ASSET_ABOUT_US;
+
 public class AboutUsActivity extends AppCompatActivity {
     private WebView webView;
 
@@ -15,7 +17,7 @@ public class AboutUsActivity extends AppCompatActivity {
 
         webView = findViewById(R.id.aboutUsContent);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("file:///android_asset/about_us.html");
+        webView.loadUrl(ASSET_ABOUT_US);
 
     }
 

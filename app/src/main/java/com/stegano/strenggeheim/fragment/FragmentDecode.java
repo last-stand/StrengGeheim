@@ -25,10 +25,15 @@ import android.widget.Toast;
 import com.stegano.strenggeheim.R;
 import com.stegano.strenggeheim.utils.stego.Steganographer;
 
+import static com.stegano.strenggeheim.Constants.DECODE_PROGRESS_MESSAGE;
+import static com.stegano.strenggeheim.Constants.DECODE_PROGRESS_TITLE;
+import static com.stegano.strenggeheim.Constants.DEFAULT_TEXT_MESSAGE;
+import static com.stegano.strenggeheim.Constants.FILE_TYPE_IMAGE;
+import static com.stegano.strenggeheim.Constants.GALLERY;
+import static com.stegano.strenggeheim.Constants.SECRET_DATA_KEY;
+
 public class FragmentDecode extends Fragment {
 
-    private static final int GALLERY = 0;
-    private static final String DEFAULT_TEXT = "Nothing to show";
     private ImageView decodeImage;
     private Button decodeButton;
     private Bitmap bmpImage;
@@ -100,7 +105,7 @@ public class FragmentDecode extends Fragment {
                             }
                             ClipboardManager clipboard = (ClipboardManager)
                                     getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                            ClipData clip = ClipData.newPlainText("SecretText", decodedMessage);
+                            ClipData clip = ClipData.newPlainText(SECRET_DATA_KEY, decodedMessage);
                             clipboard.setPrimaryClip(clip);
                             showToastMessage(getString(R.string.copied_to_clipboard));
                         }
@@ -141,15 +146,15 @@ public class FragmentDecode extends Fragment {
             decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
         }
         catch (Exception e) {
-            decodedText.setText(DEFAULT_TEXT);
+            decodedText.setText(DEFAULT_TEXT_MESSAGE);
             showToastMessage(getString(R.string.error_decoding_failed));
         }
     }
 
     private void initializeProgressDialog(){
         progress = new ProgressDialog(getContext());
-        progress.setTitle("Decoding");
-        progress.setMessage("Wait while decoding...");
+        progress.setTitle(DECODE_PROGRESS_TITLE);
+        progress.setMessage(DECODE_PROGRESS_MESSAGE);
         progress.setCancelable(false);
     }
 
@@ -164,7 +169,7 @@ public class FragmentDecode extends Fragment {
     private void galleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryIntent.setType("image/*");
+        galleryIntent.setType(FILE_TYPE_IMAGE);
         startActivityForResult(galleryIntent, GALLERY);
     }
 

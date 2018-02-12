@@ -19,9 +19,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import static com.stegano.strenggeheim.Constants.ERROR_FILE_CANT_OPEN;
+import static com.stegano.strenggeheim.Constants.FILE_CHOOSER_TITLE;
+import static com.stegano.strenggeheim.Constants.FILE_TYPE_TEXT;
+import static com.stegano.strenggeheim.Constants.SECRET_DATA_KEY;
+import static com.stegano.strenggeheim.Constants.TEXTFILE;
+import static com.stegano.strenggeheim.Constants.TEXT_DIALOG_TAB1_INDICATOR;
+import static com.stegano.strenggeheim.Constants.TEXT_DIALOG_TAB2_INDICATOR;
+
 public class TextDialogActivity extends AppCompatActivity {
     TabHost tabHost;
-    private static final int FILE_SELECT_CODE = 0;
     
     private Button browse;
     private Button cancel_button1;
@@ -50,12 +57,12 @@ public class TextDialogActivity extends AppCompatActivity {
 
         TabHost.TabSpec spec=tabHost.newTabSpec("tag1");
         spec.setContent(R.id.encode_dialog_text_tab);
-        spec.setIndicator("Edit Text");
+        spec.setIndicator(TEXT_DIALOG_TAB1_INDICATOR);
         tabHost.addTab(spec);
 
         spec=tabHost.newTabSpec("tag2");
         spec.setContent(R.id.encode_dialog_browse_tab);
-        spec.setIndicator("Browse");
+        spec.setIndicator(TEXT_DIALOG_TAB2_INDICATOR);
         tabHost.addTab(spec);
 
         browse.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +106,7 @@ public class TextDialogActivity extends AppCompatActivity {
     private void getSecretText() {
         if(secretText != null && !secretText.isEmpty()) {
             Intent intent = new Intent();
-            intent.putExtra("popup_data", secretText);
+            intent.putExtra(SECRET_DATA_KEY, secretText);
             setResult(RESULT_OK, intent);
             finish();
         }
@@ -107,12 +114,12 @@ public class TextDialogActivity extends AppCompatActivity {
 
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("text/*");
+        intent.setType(FILE_TYPE_TEXT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"),
-                    FILE_SELECT_CODE);
+            startActivityForResult(Intent.createChooser(intent, FILE_CHOOSER_TITLE),
+                    TEXTFILE);
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, R.string.msg_install_file_manager,
                     Toast.LENGTH_SHORT).show();
@@ -124,7 +131,7 @@ public class TextDialogActivity extends AppCompatActivity {
         String filePath = null;
         try {
             switch (requestCode) {
-                case FILE_SELECT_CODE:
+                case TEXTFILE:
                     if (resultCode == RESULT_OK) {
                         Uri fileUri = data.getData();
                         filePath = fileUri.getPath();
@@ -135,7 +142,7 @@ public class TextDialogActivity extends AppCompatActivity {
             }
         }
         catch (Exception ex){
-            Toast.makeText(this, "Unable to open file " + filePath,
+            Toast.makeText(this, ERROR_FILE_CANT_OPEN + filePath,
                     Toast.LENGTH_SHORT).show();
         }
         super.onActivityResult(requestCode, resultCode, data);

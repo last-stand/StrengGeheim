@@ -34,11 +34,22 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import static com.stegano.strenggeheim.Constants.CAMERA;
+import static com.stegano.strenggeheim.Constants.COMPRESS_QUALITY;
+import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_MESSAGE;
+import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_TITLE;
+import static com.stegano.strenggeheim.Constants.FILE_TYPE_IMAGE;
+import static com.stegano.strenggeheim.Constants.GALLERY;
+import static com.stegano.strenggeheim.Constants.IMAGE_DIRECTORY;
+import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM1;
+import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM2;
+import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM3;
+import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_TITLE;
+import static com.stegano.strenggeheim.Constants.PNG;
+import static com.stegano.strenggeheim.Constants.SECRET_DATA_KEY;
+import static com.stegano.strenggeheim.Constants.TEXTFILE;
 
 public class FragmentEncode extends Fragment {
-    private static final String IMAGE_DIRECTORY = "/StrengGeheim";
-    private static final int GALLERY = 0, CAMERA = 1, TEXTFILE = 2;
-    private static int COMPRESS_QUALITY = 60;
     private static int requestType;
     private File imageFile;
     private Bitmap bmpImage;
@@ -61,7 +72,7 @@ public class FragmentEncode extends Fragment {
     private void galleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        galleryIntent.setType("image/*");
+        galleryIntent.setType(FILE_TYPE_IMAGE);
         startActivityForResult(galleryIntent, GALLERY);
     }
 
@@ -75,7 +86,8 @@ public class FragmentEncode extends Fragment {
     private Uri getOutputMediaFileUri() {
         try {
             imageFile = getOutputMediaFile();
-            return FileProvider.getUriForFile(getActivity(), BuildConfig.APPLICATION_ID + ".provider", imageFile);
+            return FileProvider.getUriForFile(getActivity(),
+                    BuildConfig.APPLICATION_ID + ".provider", imageFile);
         }
         catch (IOException ex){
             showToastMessage(getString(R.string.error_fail_message));
@@ -146,11 +158,11 @@ public class FragmentEncode extends Fragment {
 
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
-        pictureDialog.setTitle("Select Action");
+        pictureDialog.setTitle(PICTURE_DIALOG_TITLE);
         String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera",
-                "Cancel"
+                PICTURE_DIALOG_ITEM1,
+                PICTURE_DIALOG_ITEM2,
+                PICTURE_DIALOG_ITEM3
         };
         pictureDialog.setItems(pictureDialogItems,
                 new DialogInterface.OnClickListener() {
@@ -196,7 +208,7 @@ public class FragmentEncode extends Fragment {
                 imageTextMessage.setVisibility(View.INVISIBLE);
             }
             else if (requestCode == TEXTFILE && data != null){
-                secretText = data.getExtras().getString("popup_data");
+                secretText = data.getExtras().getString(SECRET_DATA_KEY);
             }
         } catch (Exception ex) {
             showToastMessage(getString(R.string.error_fail_message));
@@ -219,7 +231,8 @@ public class FragmentEncode extends Fragment {
     private Bitmap compressBitmap(Bitmap bmp){
         ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, byteOutputStream);
-        Bitmap newBmp = BitmapFactory.decodeStream(new ByteArrayInputStream(byteOutputStream.toByteArray()));
+        Bitmap newBmp = BitmapFactory
+                .decodeStream(new ByteArrayInputStream(byteOutputStream.toByteArray()));
         return newBmp;
     }
 
@@ -235,7 +248,7 @@ public class FragmentEncode extends Fragment {
                         if (isImageExist()) {
                             MediaScannerConnection.scanFile(getContext(),
                                     new String[]{imageFile.getPath()},
-                                    new String[]{"image/jpg"}, null);
+                                    new String[]{FILE_TYPE_IMAGE}, null);
                             showToastMessage(getString(R.string.message_encoding_success));
                         }
                         reset();
@@ -255,7 +268,8 @@ public class FragmentEncode extends Fragment {
                     @Override
                     public void run() {
                         if (isImageExist()) {
-                            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                            Intent mediaScanIntent =
+                                    new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                             Uri contentUri = Uri.fromFile(imageFile);
                             mediaScanIntent.setData(contentUri);
                             getContext().sendBroadcast(mediaScanIntent);
@@ -280,8 +294,8 @@ public class FragmentEncode extends Fragment {
 
     private void initializeProgressDialog(){
         progress = new ProgressDialog(getContext());
-        progress.setTitle("Encoding");
-        progress.setMessage("Wait while encoding...");
+        progress.setTitle(ENCODE_PROGRESS_TITLE);
+        progress.setMessage(ENCODE_PROGRESS_MESSAGE);
         progress.setCancelable(false);
     }
 
@@ -293,7 +307,7 @@ public class FragmentEncode extends Fragment {
             encodeImageDirectory.mkdirs();
         }
         String uniqueId = UUID.randomUUID().toString();
-        File mediaFile = new File(encodeImageDirectory, uniqueId + ".jpg");
+        File mediaFile = new File(encodeImageDirectory, uniqueId + PNG);
         mediaFile.createNewFile();
         return mediaFile;
     }

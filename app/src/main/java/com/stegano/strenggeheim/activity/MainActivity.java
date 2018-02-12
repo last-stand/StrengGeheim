@@ -31,6 +31,11 @@ import com.stegano.strenggeheim.fragment.SettingsFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stegano.strenggeheim.Constants.TAB_DECODE_TITLE;
+import static com.stegano.strenggeheim.Constants.TAB_ENCODE_TITLE;
+import static com.stegano.strenggeheim.Constants.TAG_HOME;
+import static com.stegano.strenggeheim.Constants.TAG_SETTINGS;
+
 public class MainActivity extends RuntimePermissionsActivity {
 
     private static final int REQUEST_PERMISSIONS = 20;
@@ -49,8 +54,6 @@ public class MainActivity extends RuntimePermissionsActivity {
 
     public static int navItemIndex = 0;
 
-    private static final String TAG_HOME = "home";
-    private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_HOME;
 
     private String[] activityTitles;
@@ -248,8 +251,8 @@ public class MainActivity extends RuntimePermissionsActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentEncode(), "Encode");
-        adapter.addFragment(new FragmentDecode(), "Decode");
+        adapter.addFragment(new FragmentEncode(), TAB_ENCODE_TITLE);
+        adapter.addFragment(new FragmentDecode(), TAB_DECODE_TITLE);
         viewPager.setAdapter(adapter);
     }
 
