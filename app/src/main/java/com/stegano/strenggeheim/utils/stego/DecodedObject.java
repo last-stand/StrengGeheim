@@ -31,7 +31,4 @@ public class DecodedObject {
 
         return file;
     }
-
-    // TODO: Conversion methods to convert byte arrays into other formats...
-
 }

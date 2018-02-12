@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,21 +25,21 @@ import android.widget.Toast;
 import com.stegano.strenggeheim.BuildConfig;
 import com.stegano.strenggeheim.R;
 import com.stegano.strenggeheim.activity.TextDialogActivity;
+import com.stegano.strenggeheim.utils.imageUtil.BitmapHelper;
 import com.stegano.strenggeheim.utils.stego.Steganographer;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
 import static com.stegano.strenggeheim.Constants.CAMERA;
-import static com.stegano.strenggeheim.Constants.COMPRESS_QUALITY;
 import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_MESSAGE;
 import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_TITLE;
 import static com.stegano.strenggeheim.Constants.FILE_TYPE_IMAGE;
 import static com.stegano.strenggeheim.Constants.GALLERY;
 import static com.stegano.strenggeheim.Constants.IMAGE_DIRECTORY;
+import static com.stegano.strenggeheim.Constants.IMAGE_HEIGHT;
+import static com.stegano.strenggeheim.Constants.IMAGE_WIDTH;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM1;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM2;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM3;
@@ -201,8 +200,7 @@ public class FragmentEncode extends Fragment {
             }
             else if (requestCode == CAMERA) {
                 requestType = CAMERA;
-                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-                bmpImage = compressBitmap(bitmap);
+                bmpImage = compressBitmap(imageFile.getAbsolutePath());
                 loadImage.setImageBitmap(bmpImage);
                 showToastMessage(getString(R.string.message_image_selected));
                 imageTextMessage.setVisibility(View.INVISIBLE);
@@ -224,16 +222,11 @@ public class FragmentEncode extends Fragment {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
-        Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
-        return compressBitmap(bitmap);
+        return compressBitmap(picturePath);
     }
 
-    private Bitmap compressBitmap(Bitmap bmp){
-        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, COMPRESS_QUALITY, byteOutputStream);
-        Bitmap newBmp = BitmapFactory
-                .decodeStream(new ByteArrayInputStream(byteOutputStream.toByteArray()));
-        return newBmp;
+    private Bitmap compressBitmap(String picturePath){
+        return BitmapHelper.decodeSampledBitmap(picturePath, IMAGE_WIDTH, IMAGE_HEIGHT);
     }
 
     private void encodeImageFromGallery() {

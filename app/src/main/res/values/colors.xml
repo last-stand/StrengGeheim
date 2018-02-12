@@ -6,7 +6,7 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="colorSecondaryDark">#4c4c4d</color>
     <color name="dialogColor">#585858</color>
-    <color name="colorButtonBackground">#383838</color>
-    <color name="colorButtonPressed">#606060</color>
+    <color name="colorButtonBackground">#5a595b</color>
+    <color name="colorButtonPressed">#6b6b6b</color>
     <color name="colorButtonText">#ffffff</color>
 </resources>

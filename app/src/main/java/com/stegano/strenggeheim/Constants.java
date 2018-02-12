@@ -7,7 +7,9 @@ public interface Constants {
     int TEXTFILE = 2;
     String FILE_TYPE_TEXT = "text/*";
     String FILE_TYPE_IMAGE = "image/*";
-    int COMPRESS_QUALITY = 60;
+    int IMAGE_WIDTH = 1600;
+    int IMAGE_HEIGHT = 1200;
+
     String DEFAULT_TEXT_MESSAGE = "Nothing to show";
     String FILE_CHOOSER_TITLE = "Select a File to Upload";
     String PNG = ".png";
@@ -18,9 +20,9 @@ public interface Constants {
     String TAB_DECODE_TITLE = "Decode";
 
     String ENCODE_PROGRESS_TITLE = "Encoding";
-    String ENCODE_PROGRESS_MESSAGE = "Wait while encoding...";
+    String ENCODE_PROGRESS_MESSAGE = "Please wait while encoding...";
     String DECODE_PROGRESS_TITLE = "Decoding";
-    String DECODE_PROGRESS_MESSAGE = "Wait while decoding...";
+    String DECODE_PROGRESS_MESSAGE = "Please wait while decoding...";
 
     String SECRET_DATA_KEY = "secret_data";
 

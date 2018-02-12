@@ -35,20 +35,6 @@ public class Steganographer {
         return steg;
     }
 
-    public static Steganographer withRandomInput() {
-        return withRandomInput(200);
-    }
-
-    public static Steganographer withRandomInput(int size) {
-        return withRandomInput(size, size, null);
-    }
-
-    public static Steganographer withRandomInput(int width, int height, @ColorInt Integer color) {
-        Steganographer steg = new Steganographer();
-        steg.setInputBitmap(BitmapHelper.createTestBitmap(width, height, color));
-        return steg;
-    }
-
     /**
      * @param bitmap - set the input bitmap to operate on
      */
