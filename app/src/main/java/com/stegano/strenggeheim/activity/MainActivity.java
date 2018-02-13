@@ -26,7 +26,6 @@ import com.stegano.strenggeheim.R;
 import com.stegano.strenggeheim.fragment.FragmentDecode;
 import com.stegano.strenggeheim.fragment.FragmentEncode;
 import com.stegano.strenggeheim.fragment.HomeFragment;
-import com.stegano.strenggeheim.fragment.SettingsFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ import java.util.List;
 import static com.stegano.strenggeheim.Constants.TAB_DECODE_TITLE;
 import static com.stegano.strenggeheim.Constants.TAB_ENCODE_TITLE;
 import static com.stegano.strenggeheim.Constants.TAG_HOME;
-import static com.stegano.strenggeheim.Constants.TAG_SETTINGS;
 
 public class MainActivity extends RuntimePermissionsActivity {
 
@@ -154,9 +152,6 @@ public class MainActivity extends RuntimePermissionsActivity {
             case 0:
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
-            case 1:
-                SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
             default:
                 return new FragmentEncode();
         }
@@ -182,12 +177,13 @@ public class MainActivity extends RuntimePermissionsActivity {
                         CURRENT_TAG = TAG_HOME;
                         break;
                     case R.id.nav_settings:
-                        navItemIndex = 1;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
+                        Intent intentSettings = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intentSettings);
+                        drawer.closeDrawers();
+                        return true;
                     case R.id.nav_about_us:
-                        Intent intent = new Intent(MainActivity.this, AboutUsActivity.class);
-                        startActivity(intent);
+                        Intent intentAboutUs = new Intent(MainActivity.this, AboutUsActivity.class);
+                        startActivity(intentAboutUs);
                         drawer.closeDrawers();
                         return true;
                     default:

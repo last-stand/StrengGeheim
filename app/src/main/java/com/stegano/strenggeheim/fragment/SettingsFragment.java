@@ -1,6 +1,14 @@
 package com.stegano.strenggeheim.fragment;
 
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.preference.PreferenceFragment;
 
-public class SettingsFragment extends Fragment {
+import com.stegano.strenggeheim.R;
+
+public class SettingsFragment extends PreferenceFragment {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
+    }
 }

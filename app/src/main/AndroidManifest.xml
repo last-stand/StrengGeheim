@@ -44,6 +44,13 @@
             android:theme="@style/Theme.AppCompat.Dialog"
             android:label="Secret Message">
         </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="Settings"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:parentActivityName=".activity.MainActivity">
+        </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"

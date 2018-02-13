@@ -48,4 +48,10 @@
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="nothing_to_copy">Nothing to copy</string>
     <string name="msg_install_file_manager">Please install a File Manager</string>
+
+
+    <string name="prefs_category_one">Password Hashing</string>
+    <string name="prefs_summ_category_one">Choose hashing algorithm to protect password</string>
+    <string name="prefs_category_two">Text Encryption</string>
+    <string name="prefs_summ_category_two">Choose encryption algorithm to encrypt message</string>
 </resources>

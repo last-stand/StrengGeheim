@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/prefs_category_one">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="Checkbox"
+            android:defaultValue="true"/>
+
+        <EditTextPreference android:title="Your Name"
+            android:key="username"
+            android:summary="Please provide your username"></EditTextPreference>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/prefs_category_two">
+
+        <ListPreference     android:title="Download Details"
+            android:summary="Select the kind of data that you would like to download"
+            android:key="downloadType"
+            android:defaultValue="1"
+            android:entries="@array/listArray"
+            android:entryValues="@array/listValues" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
