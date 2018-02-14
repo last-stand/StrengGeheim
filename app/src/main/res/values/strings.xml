@@ -50,8 +50,10 @@
     <string name="msg_install_file_manager">Please install a File Manager</string>
 
 
-    <string name="prefs_category_one">Password Hashing</string>
-    <string name="prefs_summ_category_one">Choose hashing algorithm to protect password</string>
-    <string name="prefs_category_two">Text Encryption</string>
-    <string name="prefs_summ_category_two">Choose encryption algorithm to encrypt message</string>
+    <string name="prefs_category_hashing">Password Hashing</string>
+    <string name="list_prefs_summ_hashing">Choose hashing algorithm to protect password</string>
+    <string name="list_prefs_title_hashing">Choose Hashing algorithm</string>
+    <string name="prefs_category_encryption">Text Encryption</string>
+    <string name="list_prefs_summ_encryption">Choose encryption algorithm to encrypt message</string>
+    <string name="list_prefs_title_encryption">Choose Encryption algorithm</string>
 </resources>
