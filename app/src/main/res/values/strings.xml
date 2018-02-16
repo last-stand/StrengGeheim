@@ -54,8 +54,10 @@
     <string name="list_prefs_summ_hashing">Choose hashing algorithm to protect password</string>
     <string name="list_prefs_title_hashing">Choose Hashing algorithm</string>
     <string name="list_prefs_key_hashing">hashing_algo</string>
+    <string name="list_prefs_default_hashing">SHA-1</string>
     <string name="prefs_category_encryption">Text Encryption</string>
     <string name="list_prefs_summ_encryption">Choose encryption algorithm to encrypt message</string>
     <string name="list_prefs_title_encryption">Choose Encryption algorithm</string>
     <string name="list_prefs_key_encryption">encryption_algo</string>
+    <string name="list_prefs_default_encryption">AES</string>
 </resources>

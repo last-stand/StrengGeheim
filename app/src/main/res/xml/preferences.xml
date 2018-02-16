@@ -6,9 +6,9 @@
         <ListPreference android:title="@string/list_prefs_title_hashing"
             android:summary="@string/list_prefs_summ_hashing"
             android:key="@string/list_prefs_key_hashing"
-            android:defaultValue="SHA1"
+            android:defaultValue="@string/list_prefs_default_hashing"
             android:entries="@array/hashAlgoArray"
-            android:entryValues="@array/hashAlgoValues" />
+            android:entryValues="@array/hashAlgoArray" />
 
     </PreferenceCategory>
 
@@ -18,9 +18,9 @@
         <ListPreference android:title="@string/list_prefs_title_encryption"
             android:summary="@string/list_prefs_summ_encryption"
             android:key="@string/list_prefs_key_encryption"
-            android:defaultValue="AES"
+            android:defaultValue="@string/list_prefs_default_encryption"
             android:entries="@array/encryptAlgoArray"
-            android:entryValues="@array/encryptAlgoValues" />
+            android:entryValues="@array/encryptAlgoArray" />
 
     </PreferenceCategory>
 </PreferenceScreen>

@@ -7,22 +7,9 @@
         <item>RC6</item>
     </string-array>
 
-    <string-array name="encryptAlgoValues">
-        <item>AES</item>
-        <item>TDES</item>
-        <item>RC5</item>
-        <item>RC6</item>
-    </string-array>
-
     <string-array name="hashAlgoArray">
         <item>SHA-1</item>
         <item>SHA-256</item>
-        <item>MD5</item>
-    </string-array>
-
-    <string-array name="hashAlgoValues">
-        <item>SHA1</item>
-        <item>SHA256</item>
         <item>MD5</item>
     </string-array>
 </resources>

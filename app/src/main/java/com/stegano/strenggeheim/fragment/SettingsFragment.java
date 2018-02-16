@@ -9,12 +9,16 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import com.stegano.strenggeheim.R;
+import com.stegano.strenggeheim.SteganoGlobal;
 
 public class SettingsFragment extends PreferenceFragment {
 
     SharedPreferences sharedPref;
     ListPreference hashingPreference;
     ListPreference encryptionPreference;
+
+    private String hashingPref;
+    private String encryptionPref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,8 +28,8 @@ public class SettingsFragment extends PreferenceFragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
 
         final SharedPreferences.Editor editor = sharedPref.edit();
-        final String hashingPref = getString(R.string.list_prefs_key_hashing);
-        final String encryptionPref = getString(R.string.list_prefs_key_encryption);
+        hashingPref = getString(R.string.list_prefs_key_hashing);
+        encryptionPref = getString(R.string.list_prefs_key_encryption);
 
         hashingPreference = (ListPreference) findPreference(hashingPref);
         encryptionPreference = (ListPreference) findPreference(encryptionPref);
@@ -45,6 +49,18 @@ public class SettingsFragment extends PreferenceFragment {
                 return editor.commit();
             }
         });
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        SteganoGlobal global = (SteganoGlobal) getActivity().getApplication();
+        String defaultHashingAlgo = getString(R.string.list_prefs_default_hashing);
+        String defaultEncryptionAlgo = getString(R.string.list_prefs_default_encryption);
+        String hashingAlgo = sharedPref.getString(hashingPref, defaultHashingAlgo);
+        String encryptionAlgo = sharedPref.getString(encryptionPref, defaultEncryptionAlgo);
+        global.setHashingAlgo(hashingAlgo);
+        global.setEncryptionAlgo(encryptionAlgo);
     }
 
 }

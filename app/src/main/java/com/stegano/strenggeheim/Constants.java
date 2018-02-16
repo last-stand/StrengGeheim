@@ -7,15 +7,14 @@ public interface Constants {
     int TEXTFILE = 2;
     String FILE_TYPE_TEXT = "text/*";
     String FILE_TYPE_IMAGE = "image/*";
-    int IMAGE_WIDTH = 1600;
-    int IMAGE_HEIGHT = 1200;
+    int IMAGE_WIDTH = 1280;
+    int IMAGE_HEIGHT = 800;
 
     String DEFAULT_TEXT_MESSAGE = "Nothing to show";
     String FILE_CHOOSER_TITLE = "Select a File to Upload";
     String PNG = ".png";
 
     String TAG_HOME = "home";
-    String TAG_SETTINGS = "settings";
     String TAB_ENCODE_TITLE = "Encode";
     String TAB_DECODE_TITLE = "Decode";
 
