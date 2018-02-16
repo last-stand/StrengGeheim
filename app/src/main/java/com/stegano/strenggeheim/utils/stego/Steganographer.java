@@ -2,8 +2,8 @@ package com.stegano.strenggeheim.utils.stego;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+
 import java.io.File;
 
 public class Steganographer {
