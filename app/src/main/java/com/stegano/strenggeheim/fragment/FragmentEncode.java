@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -53,7 +54,10 @@ public class FragmentEncode extends Fragment {
     private File imageFile;
     private Bitmap bmpImage;
     private String secretText;
+    private String hashingAlgo;
+    private String encryptionAlgo;
     TextView imageTextMessage;
+    TextView passwordToEncode;
     ImageView loadImage;
     Button textInputButton;
     Button encodeButton;
@@ -103,6 +107,7 @@ public class FragmentEncode extends Fragment {
         loadImage =  view.findViewById(R.id.loadImage);
         textInputButton = view.findViewById(R.id.textInputButton);
         encodeButton = view.findViewById(R.id.encodeButton);
+        passwordToEncode = view.findViewById(R.id.passwordToEncode);
 
         initializeProgressDialog();
 
@@ -280,11 +285,37 @@ public class FragmentEncode extends Fragment {
 
     private void encode() {
         try {
-            Steganographer.withInput(bmpImage).encode(secretText).intoFile(imageFile);
+            getAlgoNamesFromSharedPreferences();
+            String password = passwordToEncode.getText().toString();
+            if(isPasswordExist(password)) {
+                Steganographer.withInput(bmpImage)
+                        .withPassword(password)
+                        .encode(secretText, encryptionAlgo, hashingAlgo)
+                        .intoFile(imageFile);
+            }
+            else {
+                Steganographer.withInput(bmpImage)
+                        .encode(secretText, encryptionAlgo, hashingAlgo)
+                        .intoFile(imageFile);
+            }
         }
         catch (Exception e) {
             deleteFile();
         }
+    }
+
+    private void getAlgoNamesFromSharedPreferences() {
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String defaultHashingAlgo = getString(R.string.list_prefs_default_hashing);
+        String defaultEncryptionAlgo = getString(R.string.list_prefs_default_encryption);
+        String hashingPref = getString(R.string.list_prefs_key_hashing);
+        String encryptionPref = getString(R.string.list_prefs_key_encryption);
+        hashingAlgo = sharedPref.getString(hashingPref, defaultHashingAlgo);
+        encryptionAlgo = sharedPref.getString(encryptionPref, defaultEncryptionAlgo);
+    }
+
+    private boolean isPasswordExist(String password) {
+        return password != null && !password.isEmpty();
     }
 
     private void initializeProgressDialog(){
@@ -317,11 +348,11 @@ public class FragmentEncode extends Fragment {
         secretText = "";
         imageFile = null;
         bmpImage = null;
-        secretText = null;
         requestType = -1;
         progress.dismiss();
         loadImage.setImageResource(android.R.color.transparent);
         imageTextMessage.setVisibility(View.VISIBLE);
+        passwordToEncode.setText("");
     }
 
     private void showToastMessage(final String message){

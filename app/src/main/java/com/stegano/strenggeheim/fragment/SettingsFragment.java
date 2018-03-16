@@ -9,7 +9,6 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import com.stegano.strenggeheim.R;
-import com.stegano.strenggeheim.SteganoGlobal;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -54,13 +53,6 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public void onStop(){
         super.onStop();
-        SteganoGlobal global = (SteganoGlobal) getActivity().getApplication();
-        String defaultHashingAlgo = getString(R.string.list_prefs_default_hashing);
-        String defaultEncryptionAlgo = getString(R.string.list_prefs_default_encryption);
-        String hashingAlgo = sharedPref.getString(hashingPref, defaultHashingAlgo);
-        String encryptionAlgo = sharedPref.getString(encryptionPref, defaultEncryptionAlgo);
-        global.setHashingAlgo(hashingAlgo);
-        global.setEncryptionAlgo(encryptionAlgo);
     }
 
 }

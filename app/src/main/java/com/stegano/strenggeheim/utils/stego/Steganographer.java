@@ -4,17 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
+import com.stegano.strenggeheim.utils.encrypt.Encryptor;
+
 import java.io.File;
 
 public class Steganographer {
-    // Don't use any additional password for encryption/decryption of the data
-    private final int PASS_NONE = 0;
-    // Note this is really dumb encryption and can be broken easily but is better than someone being
-    // able to just read the bytes straight out...
-    private final int PASS_SIMPLE_XOR = 1;
 
-    private String key = null;
-    private int passmode = PASS_NONE;
+    private String key = "";
     private Bitmap inBitmap = null;
 
     public static Steganographer withInput(@NonNull String filePath) {
@@ -42,30 +38,8 @@ public class Steganographer {
         this.inBitmap = bitmap;
     }
 
-    // OPTIONAL ENCRYPTION STEP
-
-    /**
-     * @param key - Additional password to encrypt the data with (or decrypt)
-     */
     public Steganographer withPassword(@NonNull String key) {
-        withPassword(key, PASS_SIMPLE_XOR);
-        return this;
-    }
-
-    /**
-     * @param key -  Additional password to encrypt the data with (or decrypt)
-     * @param mode - Mode to use the password with, by default we'll prob
-     * use something dumb and insecure
-     */
-    public Steganographer withPassword(@NonNull String key, int mode) {
         this.key = key;
-        this.passmode = mode;
-
-        // FIXME:
-        if (1 == 1) {
-            throw new RuntimeException("Not implemented yet");
-        }
-
         return this;
     }
 
@@ -83,21 +57,20 @@ public class Steganographer {
             throw new RuntimeException("Not implemented yet");
         }
 
-        return encode("");
+        return null;
     }
 
-    public EncodedObject encode(@NonNull String string) throws Exception {
-        return encode(string.getBytes());
+    public EncodedObject encode(@NonNull String inputString, String encryptionAlgo,
+                                String hashingAlgo) throws Exception{
+        String encryptedString = Encryptor.encrypt(inputString, key, encryptionAlgo, hashingAlgo);
+        return encode(encryptedString.getBytes());
     }
 
     public EncodedObject encode(@NonNull byte[] bytes) throws Exception {
-
-        // Check there is enough space for bitmap to be encoded into image
+        String message = "Not enough space in bitmap to hold data (max:";
         if (bytes.length>bytesAvaliableInBitmap()){
-            throw new IllegalArgumentException("Not enough space in bitmap to hold data (max:"+bytesAvaliableInBitmap()+")");
+            throw new IllegalArgumentException(message + bytesAvaliableInBitmap()+")");
         }
-
-        // Create an encoded object from our bitmap
         return new EncodedObject(BitmapEncoder.encode(inBitmap, bytes));
     }
 
