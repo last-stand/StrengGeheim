@@ -11,6 +11,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
@@ -305,7 +306,8 @@ public class FragmentEncode extends Fragment {
     }
 
     private void getAlgoNamesFromSharedPreferences() {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        Context context = getActivity().getApplicationContext();
+        SharedPreferences sharedPref =  PreferenceManager.getDefaultSharedPreferences(context);
         String defaultHashingAlgo = getString(R.string.list_prefs_default_hashing);
         String defaultEncryptionAlgo = getString(R.string.list_prefs_default_encryption);
         String hashingPref = getString(R.string.list_prefs_key_hashing);

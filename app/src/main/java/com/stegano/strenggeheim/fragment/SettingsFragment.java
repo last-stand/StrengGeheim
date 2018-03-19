@@ -23,8 +23,9 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
+        Context context = getActivity().getApplicationContext();
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        PreferenceManager.setDefaultValues(context, R.xml.preferences, false);
 
         final SharedPreferences.Editor editor = sharedPref.edit();
         hashingPref = getString(R.string.list_prefs_key_hashing);
