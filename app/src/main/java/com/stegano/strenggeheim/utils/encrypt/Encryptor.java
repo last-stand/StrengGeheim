@@ -23,7 +23,7 @@ public class Encryptor {
     static {
         algoKeyLength = new HashMap<>();
         algoKeyLength.put("AES", 32);
-        algoKeyLength.put("TripleDES", 24);
+        algoKeyLength.put("DESede", 24);
         algoKeyLength.put("RC5", 128);
         algoKeyLength.put("RC6", 128);
     }

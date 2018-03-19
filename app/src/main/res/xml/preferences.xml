@@ -20,7 +20,7 @@
             android:key="@string/list_prefs_key_encryption"
             android:defaultValue="@string/list_prefs_default_encryption"
             android:entries="@array/encryptAlgoArray"
-            android:entryValues="@array/encryptAlgoArray" />
+            android:entryValues="@array/encryptAlgoArrayValue" />
 
     </PreferenceCategory>
 </PreferenceScreen>
