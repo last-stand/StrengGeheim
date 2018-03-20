@@ -13,7 +13,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class Encryptor {
     private static SecretKeySpec secretKey;
     private static byte[] key;
-    private static String DEFAULT_SECRET = ">!EtTu,Brute?<";
     private static String MODE_OF_OPERATION = "ECB";
     private static String PADDING_SCHEME = "PKCS5Padding" ;
     private static final byte[] SALT = { (byte) 0x28, (byte) 0x5F, (byte) 0x71, (byte) 0xC9,
@@ -30,7 +29,7 @@ public class Encryptor {
 
     public static void setKey(String secret, String encryptionAlgo, String hashingAlgo)
             throws NoSuchAlgorithmException{
-        key = secret != "" ? secret.getBytes() : DEFAULT_SECRET.getBytes();
+        key = secret.getBytes();
         MessageDigest sha = MessageDigest.getInstance(hashingAlgo);
         sha.update(SALT);
         byte[] digestOfPassword = sha.digest(key);

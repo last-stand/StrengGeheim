@@ -8,10 +8,16 @@ import com.stegano.strenggeheim.utils.encrypt.Encryptor;
 
 import java.io.File;
 
+import static com.stegano.strenggeheim.Constants.end;
+import static com.stegano.strenggeheim.Constants.midWithOutPwd;
+import static com.stegano.strenggeheim.Constants.midWithPwd;
+import static com.stegano.strenggeheim.Constants.start;
+
 public class Steganographer {
 
     private String key = "";
     private Bitmap inBitmap = null;
+    private static String additionalInfo;
 
     public static Steganographer withInput(@NonNull String filePath) {
         Steganographer steg = new Steganographer();
@@ -62,8 +68,18 @@ public class Steganographer {
 
     public EncodedObject encode(@NonNull String inputString, String encryptionAlgo,
                                 String hashingAlgo) throws Exception{
+        setAdditionalInfo(encryptionAlgo, hashingAlgo);
+        inputString = additionalInfo + inputString;
         String encryptedString = Encryptor.encrypt(inputString, key, encryptionAlgo, hashingAlgo);
         return encode(encryptedString.getBytes());
+    }
+
+    private void setAdditionalInfo(String encryptionAlgo, String hashingAlgo){
+        String mid = key != "" ? midWithPwd : midWithOutPwd;
+        additionalInfo = start + encryptionAlgo + mid + hashingAlgo + end;
+        if(mid == midWithOutPwd){
+            key = additionalInfo;
+        }
     }
 
     public EncodedObject encode(@NonNull byte[] bytes) throws Exception {
