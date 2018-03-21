@@ -69,8 +69,8 @@ public class Steganographer {
     public EncodedObject encode(@NonNull String inputString, String encryptionAlgo,
                                 String hashingAlgo) throws Exception{
         setAdditionalInfo(encryptionAlgo, hashingAlgo);
-        inputString = additionalInfo + inputString;
         String encryptedString = Encryptor.encrypt(inputString, key, encryptionAlgo, hashingAlgo);
+        encryptedString = additionalInfo + encryptedString;
         return encode(encryptedString.getBytes());
     }
 

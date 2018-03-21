@@ -36,9 +36,9 @@ public interface Constants {
 
     String ASSET_ABOUT_US = "file:///android_asset/about_us.html";
 
-    String start = ">s!";
-    String midWithPwd = "0@E";
-    String midWithOutPwd = "!0@E";
-    String end = "?d<";
+    String start = ">sƒ";
+    String midWithPwd = "!0π";
+    String midWithOutPwd = "!0Ω";
+    String end = "eƒ<";
 
 }
