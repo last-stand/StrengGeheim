@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stegano.strenggeheim.PasswordMissingException;
 import com.stegano.strenggeheim.R;
 import com.stegano.strenggeheim.utils.stego.Steganographer;
 
@@ -30,6 +31,7 @@ import static com.stegano.strenggeheim.Constants.DECODE_PROGRESS_TITLE;
 import static com.stegano.strenggeheim.Constants.DEFAULT_TEXT_MESSAGE;
 import static com.stegano.strenggeheim.Constants.FILE_TYPE_IMAGE;
 import static com.stegano.strenggeheim.Constants.GALLERY;
+import static com.stegano.strenggeheim.Constants.MESSAGE_MISSING_PASSWORD;
 import static com.stegano.strenggeheim.Constants.SECRET_DATA_KEY;
 
 public class FragmentDecode extends Fragment {
@@ -39,9 +41,11 @@ public class FragmentDecode extends Fragment {
     private Bitmap bmpImage;
     private TextView imageTextMessage;
     private TextView decodedText;
+    private TextView passwordToDecode;
     private Button closeButton;
     private Button copyButton;
     private String decodedMessage;
+    private boolean neededPassword;
     ProgressDialog progress;
 
     public FragmentDecode(){
@@ -62,6 +66,7 @@ public class FragmentDecode extends Fragment {
         decodeButton = view.findViewById(R.id.decodeButton);
         imageTextMessage = view.findViewById(R.id.imageTextDecodeMessage);
         decodeImage = view.findViewById(R.id.loadDecodeImage);
+        passwordToDecode = view.findViewById(R.id.passwordToDecode);
 
         initializeProgressDialog();
 
@@ -136,6 +141,10 @@ public class FragmentDecode extends Fragment {
                         }
                         else {
                             decodedText.setText(DEFAULT_TEXT_MESSAGE);
+                            if(neededPassword) {
+                                showToastMessage(MESSAGE_MISSING_PASSWORD);
+                                return;
+                            }
                             showToastMessage(getString(R.string.error_decoding_failed));
                         }
                         progress.dismiss();
@@ -145,13 +154,29 @@ public class FragmentDecode extends Fragment {
         }).start();
     }
 
-    private void decode(){
+    private void decode() {
+        String password = passwordToDecode.getText().toString();
         try {
-            decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
+            if(isPasswordEntered(password)){
+                decodedMessage = Steganographer.withInput(bmpImage)
+                                .withPassword(password)
+                                .decode()
+                                .intoString();
+            }
+            else{
+                decodedMessage = Steganographer.withInput(bmpImage).decode().intoString();
+            }
         }
         catch (Exception e) {
+            if(e instanceof PasswordMissingException){
+                neededPassword = true;
+            }
             decodedMessage = "";
         }
+    }
+
+    private boolean isPasswordEntered(String password) {
+        return password != null && !password.isEmpty();
     }
 
     private void initializeProgressDialog(){

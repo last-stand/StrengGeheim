@@ -36,9 +36,10 @@ public interface Constants {
 
     String ASSET_ABOUT_US = "file:///android_asset/about_us.html";
 
-    String start = ">sƒ";
     String midWithPwd = "!0π";
     String midWithOutPwd = "!0Ω";
     String end = "eƒ<";
+
+    String MESSAGE_MISSING_PASSWORD = "Please enter password, this is password protected file";
 
 }

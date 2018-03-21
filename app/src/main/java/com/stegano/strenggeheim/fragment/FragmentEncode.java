@@ -288,7 +288,7 @@ public class FragmentEncode extends Fragment {
         try {
             getAlgoNamesFromSharedPreferences();
             String password = passwordToEncode.getText().toString();
-            if(isPasswordExist(password)) {
+            if(isPasswordEntered(password)) {
                 Steganographer.withInput(bmpImage)
                         .withPassword(password)
                         .encode(secretText, encryptionAlgo, hashingAlgo)
@@ -316,7 +316,7 @@ public class FragmentEncode extends Fragment {
         encryptionAlgo = sharedPref.getString(encryptionPref, defaultEncryptionAlgo);
     }
 
-    private boolean isPasswordExist(String password) {
+    private boolean isPasswordEntered(String password) {
         return password != null && !password.isEmpty();
     }
 

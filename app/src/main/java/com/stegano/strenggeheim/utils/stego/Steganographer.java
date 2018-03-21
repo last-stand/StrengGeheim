@@ -11,7 +11,6 @@ import java.io.File;
 import static com.stegano.strenggeheim.Constants.end;
 import static com.stegano.strenggeheim.Constants.midWithOutPwd;
 import static com.stegano.strenggeheim.Constants.midWithPwd;
-import static com.stegano.strenggeheim.Constants.start;
 
 public class Steganographer {
 
@@ -51,7 +50,7 @@ public class Steganographer {
 
     // DECODING
     public DecodedObject decode() throws Exception {
-        return new DecodedObject(BitmapEncoder.decode(inBitmap));
+        return new DecodedObject(BitmapEncoder.decode(inBitmap), key);
     }
 
     // ENCODING
@@ -75,8 +74,8 @@ public class Steganographer {
     }
 
     private void setAdditionalInfo(String encryptionAlgo, String hashingAlgo){
-        String mid = key != "" ? midWithPwd : midWithOutPwd;
-        additionalInfo = start + encryptionAlgo + mid + hashingAlgo + end;
+        String mid = key.isEmpty() ? midWithOutPwd : midWithPwd;
+        additionalInfo = encryptionAlgo + mid + hashingAlgo + end;
         if(mid == midWithOutPwd){
             key = additionalInfo;
         }
