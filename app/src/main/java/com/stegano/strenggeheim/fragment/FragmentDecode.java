@@ -73,6 +73,7 @@ public class FragmentDecode extends Fragment {
         decodeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                passwordToDecode.setError(null);
                 galleryIntent();
             }
         });
@@ -142,8 +143,8 @@ public class FragmentDecode extends Fragment {
                         else {
                             decodedText.setText(DEFAULT_TEXT_MESSAGE);
                             if(neededPassword) {
-                                showToastMessage(MESSAGE_MISSING_PASSWORD);
-                                return;
+                                neededPassword = false;
+                                passwordToDecode.setError(MESSAGE_MISSING_PASSWORD);
                             }
                             showToastMessage(getString(R.string.error_decoding_failed));
                         }
