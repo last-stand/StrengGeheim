@@ -41,5 +41,6 @@ public interface Constants {
     String end = "eƒ<";
 
     String MESSAGE_MISSING_PASSWORD = "Please enter password, this is password protected file";
-
+    int MIN_PASSWORD_LENGTH = 8;
+    String ERROR_SHORT_PASSWORD = "Password must have minimum 8 characters";
 }

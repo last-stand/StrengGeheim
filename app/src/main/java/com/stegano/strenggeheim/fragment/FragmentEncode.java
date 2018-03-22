@@ -37,11 +37,13 @@ import java.util.UUID;
 import static com.stegano.strenggeheim.Constants.CAMERA;
 import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_MESSAGE;
 import static com.stegano.strenggeheim.Constants.ENCODE_PROGRESS_TITLE;
+import static com.stegano.strenggeheim.Constants.ERROR_SHORT_PASSWORD;
 import static com.stegano.strenggeheim.Constants.FILE_TYPE_IMAGE;
 import static com.stegano.strenggeheim.Constants.GALLERY;
 import static com.stegano.strenggeheim.Constants.IMAGE_DIRECTORY;
 import static com.stegano.strenggeheim.Constants.IMAGE_HEIGHT;
 import static com.stegano.strenggeheim.Constants.IMAGE_WIDTH;
+import static com.stegano.strenggeheim.Constants.MIN_PASSWORD_LENGTH;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM1;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM2;
 import static com.stegano.strenggeheim.Constants.PICTURE_DIALOG_ITEM3;
@@ -138,6 +140,10 @@ public class FragmentEncode extends Fragment {
                     showToastMessage(getString(R.string.error_no_image));
                     return;
                 }
+                else if(!isPasswordValid()){
+                    passwordToEncode.setError(ERROR_SHORT_PASSWORD);
+                    return;
+                }
                 else {
                     switch (requestType) {
                         case GALLERY:
@@ -151,6 +157,10 @@ public class FragmentEncode extends Fragment {
             }
         });
         return view;
+    }
+
+    private boolean isPasswordValid() {
+        return passwordToEncode.length() == 0 || passwordToEncode.length() >= MIN_PASSWORD_LENGTH;
     }
 
     private boolean isImageExist() {
